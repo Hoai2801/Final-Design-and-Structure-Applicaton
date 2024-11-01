@@ -65,61 +65,71 @@ public class Interactor implements InputInvoiceBoundary {
 
     @Override
     public void deleteInvoice(RequestModel req) {
-        boolean result;
-        if (req.getNationality().equals("Vietnam")) {
-            result = vietnameseInvoiceRepository.deleteInvoice(
-                    new VietnameseInvoice(
-                            req.getCustomerId(),
-                            req.getFullName(),
-                            req.getInvoiceDate(),
-                            req.getCustomerType(),
-                            req.getQuantity(),
-                            req.getPrice(),
-                            req.getQuota()));
+        ValidResult valid = valid(req);
+        if (!valid.isValid()) {
+            outputInvoiceBoundary.showError(new ResponseModel(valid.getError()));
         } else {
-            result = foreignInvoiceRepository.deleteInvoice(
-                    new ForeignInvoice(
-                            req.getCustomerId(), 
-                            req.getFullName(),
-                            req.getNationality(),
-                            req.getInvoiceDate(),
-                            req.getQuantity(),
-                            req.getPrice()));
-        }
-        if (result) {
-            outputInvoiceBoundary.showMessage(new ResponseModel("Invoice deleted successfully"));
-        } else {
-            outputInvoiceBoundary.showMessage(new ResponseModel("Invoice deletion failed"));
+            boolean result;
+            if (req.getNationality().equals("Vietnam")) {
+                result = vietnameseInvoiceRepository.deleteInvoice(
+                        new VietnameseInvoice(
+                                req.getCustomerId(),
+                                req.getFullName(),
+                                req.getInvoiceDate(),
+                                req.getCustomerType(),
+                                req.getQuantity(),
+                                req.getPrice(),
+                                req.getQuota()));
+            } else {
+                result = foreignInvoiceRepository.deleteInvoice(
+                        new ForeignInvoice(
+                                req.getCustomerId(),
+                                req.getFullName(),
+                                req.getNationality(),
+                                req.getInvoiceDate(),
+                                req.getQuantity(),
+                                req.getPrice()));
+            }
+            if (result) {
+                outputInvoiceBoundary.showMessage(new ResponseModel("Invoice deleted successfully"));
+            } else {
+                outputInvoiceBoundary.showMessage(new ResponseModel("Invoice deletion failed"));
+            }
         }
     }
 
     @Override
     public void updateInvoice(RequestModel req) {
-        boolean result;
-        if (req.getNationality().equals("Vietnam")) {
-            result = vietnameseInvoiceRepository.updateInvoice(
-                    new VietnameseInvoice(
-                            req.getCustomerId(),
-                            req.getFullName(),
-                            req.getInvoiceDate(),
-                            req.getCustomerType(),
-                            req.getQuantity(),
-                            req.getPrice(),
-                            req.getQuota()));
+        ValidResult valid = valid(req);
+        if (!valid.isValid()) {
+            outputInvoiceBoundary.showError(new ResponseModel(valid.getError()));
         } else {
-            result = foreignInvoiceRepository.updateInvoice(
-                    new ForeignInvoice(
-                            req.getCustomerId(),
-                            req.getFullName(),
-                            req.getNationality(),
-                            req.getInvoiceDate(),
-                            req.getQuantity(),
-                            req.getPrice()));
-        }
-        if (result) {
-            outputInvoiceBoundary.showMessage(new ResponseModel("Invoice updated successfully"));
-        } else {
-            outputInvoiceBoundary.showMessage(new ResponseModel("Invoice update failed"));
+            boolean result;
+            if (req.getNationality().equals("Vietnam")) {
+                result = vietnameseInvoiceRepository.updateInvoice(
+                        new VietnameseInvoice(
+                                req.getCustomerId(),
+                                req.getFullName(),
+                                req.getInvoiceDate(),
+                                req.getCustomerType(),
+                                req.getQuantity(),
+                                req.getPrice(),
+                                req.getQuota()));
+            } else {
+                result = foreignInvoiceRepository.updateInvoice(
+                        new ForeignInvoice(
+                                req.getCustomerId(),
+                                req.getFullName(),
+                                req.getNationality(),
+                                req.getInvoiceDate(),
+                                req.getQuantity(),
+                                req.getPrice()));
+            }
+            if (result) {
+                outputInvoiceBoundary.showMessage(new ResponseModel("Invoice updated successfully"));
+            } else {
+                outputInvoiceBoundary.showMessage(new ResponseModel("Invoice update failed"));
+            }
         }
     }
 
@@ -185,7 +195,7 @@ public class Interactor implements InputInvoiceBoundary {
 
     public ValidResult valid(RequestModel req) {
         ValidResult validResult = new ValidResult(true, null);
-        if (req.getFullName() == null) {
+        if (req.getFullName() == null || req.getFullName().isEmpty()) {
             validResult.setValid(false);
             validResult.setError("FullName cannot be empty");
         }

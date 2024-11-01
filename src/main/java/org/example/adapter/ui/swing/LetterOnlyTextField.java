@@ -12,20 +12,20 @@ public class LetterOnlyTextField extends JTextField {
         ((AbstractDocument) this.getDocument()).setDocumentFilter(new DocumentFilter() {
             @Override
             public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-                if (string == null) {
-                    return;
-                }
-                if (string.matches("[a-zA-Z]+")) { // Allow only letters
+//                if (string == null) {
+//                    return;
+//                }
+                if (string.matches("[a-zA-Z ]+")) { // Allow only letters and spaces
                     super.insertString(fb, offset, string, attr);
                 }
             }
 
             @Override
             public void replace(FilterBypass fb, int offset, int length, String string, AttributeSet attrs) throws BadLocationException {
-                if (string == null) {
-                    return;
-                }
-                if (string.matches("[a-zA-Z]+")) { // Allow only letters
+//                if (string == null) {
+//                    return;
+//                }
+                if (string.matches("[a-zA-Z ]+")) { // Allow only letters
                     super.replace(fb, offset, length, string, attrs);
                 }
             }

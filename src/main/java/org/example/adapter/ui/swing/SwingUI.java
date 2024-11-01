@@ -256,11 +256,11 @@ public class SwingUI extends JFrame implements Observer {
         btnUpdateInvoice.addActionListener(e -> {
             int customerId = Integer.parseInt(txtCustomerId.getText());
             String fullName = txtFullName.getText();
-            int quantity = Integer.parseInt(txtQuantity.getText());
-            int price = Integer.parseInt(txtPrice.getText());
+            int quantity = Integer.parseInt(!txtQuantity.getText().isEmpty() ? txtQuantity.getText() : "0");
+            int price = Integer.parseInt(!txtPrice.getText().isEmpty() ? txtPrice.getText() : "0");
             String customerType = cbCustomerType.getSelectedItem().toString();
             String nationality = txtNationality.getText();
-            int quota = Integer.parseInt(txtQuota.getText());
+            int quota = Integer.parseInt(!txtQuota.getText().isEmpty() ? txtQuota.getText() : "0");
             RequestModel requestModel = new RequestModel(customerId, fullName, customerType, nationality, LocalDate.now(), quantity, price, quota);
             invoiceController.updateInvoice(requestModel);
             resetForm();
