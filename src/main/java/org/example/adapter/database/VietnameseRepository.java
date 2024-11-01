@@ -79,7 +79,16 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
     }
 
     @Override
-    public int getTotalAmountOfInvoice() {
+    public int getAmountOfInvoices() {
+        String sql = "SELECT SUM(id) FROM VietnameseInvoice";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 

@@ -9,4 +9,6 @@ public interface InputInvoiceBoundary {
     void getTotalAmountOfInvoice(int type);
     void getTotalAmountOfInvoiceByMonth(int month);
     void getInvoices();
+
+    void getAnalyst();
 }

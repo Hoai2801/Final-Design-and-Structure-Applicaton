@@ -35,6 +35,7 @@ public class SwingUI extends JFrame implements Observer {
     JButton btnAddInvoice = new JButton("Add Invoice");
     JButton btnUpdateInvoice = new JButton("Update Invoice");
     JButton btnDeleteInvoice = new JButton("Delete Invoice");
+    JButton btnGenerateReport = new JButton("Generate Analytics");
     
     
     public SwingUI() {
@@ -164,6 +165,10 @@ public class SwingUI extends JFrame implements Observer {
         btnDeleteInvoice.setFont(new Font("Arial", Font.BOLD, 14));
         btnDeleteInvoice.setBackground(new Color(70, 130, 180));
         btnDeleteInvoice.setForeground(Color.WHITE);
+        
+        btnGenerateReport.setFont(new Font("Arial", Font.BOLD, 14));
+        btnGenerateReport.setBackground(new Color(70, 130, 180));
+        btnGenerateReport.setForeground(Color.WHITE);
 
         JButton resetBtn = new JButton("Reset Invoice");
         resetBtn.setFont(new Font("Arial", Font.BOLD, 14));
@@ -182,6 +187,7 @@ public class SwingUI extends JFrame implements Observer {
                                 .addComponent(lblQuota)
                                 .addComponent(lblCustomerType)
                                 .addComponent(lblNationality))
+                        
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(cbCustomer)
                                 .addComponent(txtCustomerId)
@@ -221,7 +227,6 @@ public class SwingUI extends JFrame implements Observer {
                                 .addComponent(lblNationality)
                                 .addComponent(txtNationality))
         );
-
         add(formPanel, BorderLayout.NORTH);
 
         // Buttons panel
@@ -230,8 +235,13 @@ public class SwingUI extends JFrame implements Observer {
         buttonPanel.add(btnAddInvoice);
         buttonPanel.add(btnUpdateInvoice);
         buttonPanel.add(btnDeleteInvoice);
+        buttonPanel.add(btnGenerateReport);
         buttonPanel.add(resetBtn);
         add(buttonPanel, BorderLayout.SOUTH);
+        
+        btnGenerateReport.addActionListener(e -> {
+            invoiceController.getAnalyst();
+        });
 
         // Add invoice action
         btnAddInvoice.addActionListener(e -> {

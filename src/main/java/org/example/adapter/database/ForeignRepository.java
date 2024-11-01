@@ -69,7 +69,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
     }
 
     @Override
-    public int getTotalAmountOfInvoice() {
+    public int getAmountOfInvoices() {
         // count all invoices
         String sql = "SELECT COUNT(*) FROM ForeignInvoice";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

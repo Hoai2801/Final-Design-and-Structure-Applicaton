@@ -8,7 +8,7 @@ public interface VietnameseInvoiceRepository {
     boolean createInvoice(VietnameseInvoice invoice);
     boolean deleteInvoice(VietnameseInvoice invoice);
     boolean updateInvoice(VietnameseInvoice invoice);
-    int getTotalAmountOfInvoice();
+    int getAmountOfInvoices();
     int getTotalAmountOfInvoiceByMonth(int month);
     List<VietnameseInvoice> findInvoices(String query);
 

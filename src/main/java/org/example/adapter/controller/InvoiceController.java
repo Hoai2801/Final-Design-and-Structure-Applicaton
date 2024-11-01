@@ -28,12 +28,12 @@ public class InvoiceController {
     public void getTotalAmountOfInvoice(int type) {
         commandProcessor.execute(new CountInvoiceCommand(inputInvoiceBoundary, type));
     }
-    
-    public void getTotalAmountOfInvoiceByMonth(int month) {
-        commandProcessor.execute(new CountInvoiceByMonthCommand(inputInvoiceBoundary, month));
-    }
 
     public void generateReport() {
         commandProcessor.execute(new GetReportCommand(inputInvoiceBoundary));
+    }
+    
+    public void getAnalyst() {
+        commandProcessor.execute(new GetAnalystCommand(inputInvoiceBoundary));
     }
 }

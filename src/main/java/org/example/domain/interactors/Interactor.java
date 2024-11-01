@@ -2,6 +2,7 @@ package org.example.domain.interactors;
 
 import org.example.domain.boundaries.in.InputInvoiceBoundary;
 import org.example.domain.boundaries.out.ForeignInvoiceRepository;
+import org.example.domain.boundaries.out.OutputAnalystBoundary;
 import org.example.domain.boundaries.out.OutputInvoiceBoundary;
 import org.example.domain.boundaries.out.VietnameseInvoiceRepository;
 import org.example.domain.entities.ForeignInvoice;
@@ -19,12 +20,19 @@ public class Interactor implements InputInvoiceBoundary {
     private final VietnameseInvoiceRepository vietnameseInvoiceRepository;
     private final ForeignInvoiceRepository foreignInvoiceRepository;
     private final OutputInvoiceBoundary outputInvoiceBoundary;
+    private OutputAnalystBoundary outputAnalystBoundary;
 
-    public Interactor(VietnameseInvoiceRepository vietnameseInvoiceRepository,
-            ForeignInvoiceRepository foreignInvoiceRepository, OutputInvoiceBoundary outputInvoiceBoundary) {
+    public Interactor(VietnameseInvoiceRepository vietnameseInvoiceRepository, 
+                      ForeignInvoiceRepository foreignInvoiceRepository, 
+                      OutputInvoiceBoundary outputInvoiceBoundary
+    ) {
         this.vietnameseInvoiceRepository = vietnameseInvoiceRepository;
         this.foreignInvoiceRepository = foreignInvoiceRepository;
         this.outputInvoiceBoundary = outputInvoiceBoundary;
+    }
+    
+    public void setOutputAnalystBoundary(OutputAnalystBoundary outputAnalystBoundary) {
+        this.outputAnalystBoundary = outputAnalystBoundary;
     }
 
     @Override
@@ -137,10 +145,10 @@ public class Interactor implements InputInvoiceBoundary {
     public void getTotalAmountOfInvoice(int type) {
         if (type == 1) {
             outputInvoiceBoundary.showMessage(
-                    new ResponseModel("Total amount: " + vietnameseInvoiceRepository.getTotalAmountOfInvoice()));
+                    new ResponseModel("Total amount: " + vietnameseInvoiceRepository.getAmountOfInvoices()));
         } else if (type == 2) {
             outputInvoiceBoundary.showMessage(
-                    new ResponseModel("Total amount: " + foreignInvoiceRepository.getTotalAmountOfInvoice()));
+                    new ResponseModel("Total amount: " + foreignInvoiceRepository.getAmountOfInvoices()));
         }
     }
 
@@ -191,6 +199,17 @@ public class Interactor implements InputInvoiceBoundary {
 
         outputInvoiceBoundary.showReport(new ListInvoiceResponseModel(allInvoices));
 
+    }
+
+    @Override
+    public void getAnalyst() {
+        int amountOfVietnameseInvoice = vietnameseInvoiceRepository.getAmountOfInvoices();
+        System.out.println(amountOfVietnameseInvoice);
+        int amountOfForeignInvoice = foreignInvoiceRepository.getAmountOfInvoices();
+        System.out.println(amountOfForeignInvoice);
+        double averageTotalOfForeignInvoice = foreignInvoiceRepository.getAveragePriceOfInvoices();
+        System.out.println(averageTotalOfForeignInvoice);
+        outputAnalystBoundary.renderData(amountOfVietnameseInvoice, amountOfForeignInvoice, averageTotalOfForeignInvoice);
     }
 
     public ValidResult valid(RequestModel req) {
