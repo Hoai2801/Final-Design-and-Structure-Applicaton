@@ -4,13 +4,9 @@ import java.time.LocalDate;
 
 public class ForeignInvoice extends Invoice {
     private String nationality;
-    public ForeignInvoice(int customerId, String fullName, String nationality, LocalDate invoiceDate, int quantity, int price) {
-        super(customerId, fullName, invoiceDate, quantity, price);
-        this.nationality = nationality;
-    }
-
-    public ForeignInvoice(String fullName, String nationality, LocalDate invoiceDate, int quantity, int price) {
-        super(fullName, invoiceDate, quantity, price);
+    
+    public ForeignInvoice(int invoiceId, int customerId, String fullName, LocalDate invoiceDate, double quantity, double price, String nationality) {
+        super(invoiceId, customerId, fullName, invoiceDate, quantity, price);
         this.nationality = nationality;
     }
     

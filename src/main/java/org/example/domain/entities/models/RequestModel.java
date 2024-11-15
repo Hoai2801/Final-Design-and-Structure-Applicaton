@@ -3,17 +3,18 @@ package org.example.domain.entities.models;
 import java.time.LocalDate;
 
 public class RequestModel {
-
+    private int invoiceId; 
     private int customerId;
     private String fullName;
     private String customerType;
     private String nationality;
     private LocalDate invoiceDate;
-    private int quantity;
-    private int price;
-    private int quota;
+    private double quantity;
+    private double price;
+    private double quota;
 
-    public RequestModel(int customerId, String fullName, String customerType, String nationality, LocalDate invoiceDate, int quantity, int price, int quota) {
+    public RequestModel(int invoiceId, int customerId, String fullName, String customerType, String nationality, LocalDate invoiceDate, double quantity, double price, double quota) {
+        this.invoiceId = invoiceId;
         this.customerId = customerId;
         this.fullName = fullName;
         this.customerType = customerType;
@@ -23,9 +24,9 @@ public class RequestModel {
         this.price = price;
         this.quota = quota;
     }
-
-    public RequestModel() {
-        
+    
+    public int getInvoiceId() {
+        return invoiceId;
     }
 
     public int getCustomerId() {
@@ -68,27 +69,27 @@ public class RequestModel {
         this.invoiceDate = invoiceDate;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public int getQuota() {
+    public double getQuota() {
         return quota;
     }
 
-    public void setQuota(int quota) {
+    public void setQuota(double quota) {
         this.quota = quota;
     }
 }

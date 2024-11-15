@@ -6,11 +6,15 @@ import java.util.List;
 
 public interface VietnameseInvoiceRepository {
     boolean createInvoice(VietnameseInvoice invoice);
-    boolean deleteInvoice(VietnameseInvoice invoice);
-    boolean updateInvoice(VietnameseInvoice invoice);
     int getTotalAmountOfInvoice();
     int getTotalAmountOfInvoiceByMonth(int month);
-    List<VietnameseInvoice> findInvoices(String query);
+    List<VietnameseInvoice> findInvoices(String name);
 
     List<VietnameseInvoice> getInvoices();
+
+    boolean deleteInvoiceById(int invoiceId);
+
+    VietnameseInvoice getInvoiceById(int invoiceId);
+
+    boolean updateInvoice(VietnameseInvoice existingInvoice);
 }

@@ -29,7 +29,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
             statement.setString(1, String.valueOf(invoice.getCustomerId()));
             statement.setString(2, invoice.getFullName());
             statement.setDate(3, java.sql.Date.valueOf(invoice.getInvoiceDate()));
-            statement.setInt(4, invoice.getQuantity());
+            statement.setDouble(4, invoice.getQuantity());
             statement.setDouble(5, invoice.getPrice());
             statement.setString(6, invoice.getNationality());
             statement.executeUpdate();
@@ -57,7 +57,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, invoice.getFullName());
             statement.setDate(2, java.sql.Date.valueOf(invoice.getInvoiceDate()));
-            statement.setInt(3, invoice.getQuantity());
+            statement.setDouble(3, invoice.getQuantity());
             statement.setDouble(4, invoice.getPrice());
             statement.setString(5, invoice.getNationality());
             statement.setString(6, String.valueOf(invoice.getCustomerId()));
@@ -144,6 +144,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
             List<ForeignInvoice> invoices = new java.util.ArrayList<>();
             while (resultSet.next()) {
                 ForeignInvoice invoice = new ForeignInvoice();
+                invoice.setInvoiceId(resultSet.getInt("Id"));
                 invoice.setCustomerId(resultSet.getInt("customerId"));
                 invoice.setFullName(resultSet.getString("fullName"));
                 invoice.setInvoiceDate(resultSet.getDate("invoiceDate").toLocalDate());
@@ -156,5 +157,41 @@ public class ForeignRepository implements ForeignInvoiceRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean deleteInvoiceById(int invoiceId) {
+        String sql = "DELETE FROM ForeignInvoice WHERE Id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, invoiceId);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public ForeignInvoice getInvoiceById(int invoiceId) {
+        String sql = "SELECT * FROM ForeignInvoice WHERE Id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, invoiceId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                ForeignInvoice invoice = new ForeignInvoice();
+                invoice.setInvoiceId(resultSet.getInt("Id"));
+                invoice.setCustomerId(resultSet.getInt("customerId"));
+                invoice.setFullName(resultSet.getString("fullName"));
+                invoice.setInvoiceDate(resultSet.getDate("invoiceDate").toLocalDate());
+                invoice.setQuantity(resultSet.getInt("quantity"));
+                invoice.setPrice(resultSet.getInt("price"));
+                invoice.setNationality(resultSet.getString("nationality"));
+                return invoice;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

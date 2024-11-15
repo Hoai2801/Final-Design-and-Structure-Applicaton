@@ -3,21 +3,16 @@ package org.example.domain.entities;
 import java.time.LocalDate;
 
 public abstract class Invoice {
+    private int invoiceId;
     private int customerId;
     private String fullName;
     private LocalDate invoiceDate;
-    private int quantity; // KW consumption
-    private int price;
+    private double quantity; // KW consumption
+    private double price;
 
-    public Invoice(int customerId, String fullName, LocalDate invoiceDate, int quantity, int price) {
+    public Invoice(int invoiceId, int customerId, String fullName, LocalDate invoiceDate, double quantity, double price) {
+        this.invoiceId = invoiceId;
         this.customerId = customerId;
-        this.fullName = fullName;
-        this.invoiceDate = invoiceDate;
-        this.quantity = quantity;
-        this.price = price;
-    }
-    
-    public Invoice(String fullName, LocalDate invoiceDate, int quantity, int price) {
         this.fullName = fullName;
         this.invoiceDate = invoiceDate;
         this.quantity = quantity;
@@ -25,7 +20,14 @@ public abstract class Invoice {
     }
 
     public Invoice() {
-        
+    }
+    
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+    
+    public int getInvoiceId() {
+        return invoiceId;
     }
 
     public int getCustomerId() {
@@ -52,19 +54,19 @@ public abstract class Invoice {
         this.invoiceDate = invoiceDate;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

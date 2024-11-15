@@ -3,17 +3,19 @@ package org.example.domain.entities.dtos;
 import java.time.LocalDate;
 
 public class InvoiceDTO {
+    private int invoiceId; 
     private int customerId;
     private String fullName;
     private LocalDate invoiceDate;
-    private int quantity; // KW consumption
+    private double quantity; // KW consumption
     private String customerType;
-    private int price;
+    private double price;
     private String nationality;
-    private int quota;
+    private double quota;
     private double total;
 
-    public InvoiceDTO(int customerId, String fullName, LocalDate invoiceDate, String customerType,int quantity, int price, String nationality, int quota, double total) {
+    public InvoiceDTO(int invoiceId, int customerId, String fullName, LocalDate invoiceDate, String customerType, double quantity, double price, String nationality, double quota, double total) {
+        this.invoiceId = invoiceId;
         this.customerId = customerId;
         this.fullName = fullName;
         this.invoiceDate = invoiceDate;
@@ -23,6 +25,17 @@ public class InvoiceDTO {
         this.nationality = nationality;
         this.quota = quota;
         this.total = total;
+    }
+    
+    public InvoiceDTO() {
+    }
+    
+    public int getInvoiceId() {
+        return invoiceId;
+    }
+    
+    public void setInvoiceId(int invoiceId) {
+        this.invoiceId = invoiceId;
     }
 
     public int getCustomerId() {
@@ -57,27 +70,27 @@ public class InvoiceDTO {
         this.invoiceDate = invoiceDate;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
     
-    public int getQuota() {
+    public double getQuota() {
         return quota;
     }
     
-    public void setQuota(int quota) {
+    public void setQuota(double quota) {
         this.quota = quota;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

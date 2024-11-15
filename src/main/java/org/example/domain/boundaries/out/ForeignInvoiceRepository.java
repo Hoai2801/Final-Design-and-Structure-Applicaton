@@ -15,4 +15,8 @@ public interface ForeignInvoiceRepository {
     List<ForeignInvoice> findInvoices(String query);
 
     List<ForeignInvoice> getInvoices();
+
+    boolean deleteInvoiceById(int invoiceId);
+
+    ForeignInvoice getInvoiceById(int invoiceId);
 }
