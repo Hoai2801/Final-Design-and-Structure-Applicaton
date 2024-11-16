@@ -1,6 +1,8 @@
 package org.example;
 
+import org.example.adapter.database.CustomerTypeRepositoryImpl;
 import org.example.adapter.database.ForeignRepository;
+import org.example.adapter.database.NationalityRepositoryImpl;
 import org.example.adapter.database.VietnameseRepository;
 import org.example.adapter.presenter.ChartPresenter;
 import org.example.adapter.presenter.HomePresenter;
@@ -10,6 +12,7 @@ import org.example.adapter.ui.CreateInvoiceScreen;
 import org.example.adapter.ui.HomeUI;
 import org.example.adapter.presenter.CreateScreenPresenter;
 import org.example.adapter.ui.UpdateInvoiceScreen;
+import org.example.domain.boundaries.out.NationalityRepository;
 import org.example.domain.usecases.*;
 
 public class Main {
@@ -17,14 +20,16 @@ public class Main {
         // repository
         VietnameseRepository vietnameseRepository = new VietnameseRepository();
         ForeignRepository foreignRepository = new ForeignRepository();
-        
+        CustomerTypeRepositoryImpl customerTypeRepository = new CustomerTypeRepositoryImpl();
+        NationalityRepository nationalityRepository = new NationalityRepositoryImpl();
         // create invoice screen
         CreateInvoiceScreen createInvoiceScreen = new CreateInvoiceScreen();
-        CreateScreenPresenter createScreenPresenter = new CreateScreenPresenter(createInvoiceScreen, null);
+        CreateScreenPresenter createScreenPresenter = new CreateScreenPresenter(createInvoiceScreen, null, null, null);
         OpenCreateScreenUseCase openCreateScreenUseCase = new OpenCreateScreenUseCase(createScreenPresenter);
-
+        GetCustomerTypeUseCase getCustomerTypeUseCase = new GetCustomerTypeUseCase(createScreenPresenter, customerTypeRepository);
+        GetNationalityUseCase getNationalityUseCase = new GetNationalityUseCase(createScreenPresenter, nationalityRepository);
         CreateInvoiceUseCase createInvoiceUseCase = new CreateInvoiceUseCase(createScreenPresenter, vietnameseRepository, foreignRepository);
-        createScreenPresenter = new CreateScreenPresenter(createInvoiceScreen, createInvoiceUseCase);
+        createScreenPresenter = new CreateScreenPresenter(createInvoiceScreen, createInvoiceUseCase, getCustomerTypeUseCase, getNationalityUseCase);
 
         
         // update invoice screen

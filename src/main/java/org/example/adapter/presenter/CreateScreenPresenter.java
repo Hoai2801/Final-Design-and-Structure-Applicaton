@@ -1,29 +1,36 @@
 package org.example.adapter.presenter;
 
 import org.example.adapter.ui.CreateInvoiceScreen;
-import org.example.domain.boundaries.in.CreateInvoiceInputBoundary;
-import org.example.domain.boundaries.in.OpenStateManageCreateScreenInputBoundary;
-import org.example.domain.boundaries.in.UpdateHomeScreenInputBoundary;
+import org.example.domain.boundaries.in.*;
 import org.example.domain.boundaries.out.CreateInvoiceOutputBoundary;
+import org.example.domain.boundaries.out.GetCustomerTypeOutputBoundary;
+import org.example.domain.boundaries.out.GetNationalityOutputBoundary;
 import org.example.domain.boundaries.out.OpenCreateScreenOutputBoundary;
 import org.example.domain.entities.models.RequestModel;
 import org.example.domain.entities.models.ResponseModel;
 
 import javax.swing.*;
+import java.util.List;
 
-public class CreateScreenPresenter implements OpenCreateScreenOutputBoundary, CreateInvoiceOutputBoundary {
+public class CreateScreenPresenter implements OpenCreateScreenOutputBoundary, CreateInvoiceOutputBoundary, GetCustomerTypeOutputBoundary, GetNationalityOutputBoundary {
     private final CreateInvoiceScreen view;
     private final CreateInvoiceInputBoundary createInvoiceUseCase;
-    private UpdateHomeScreenInputBoundary updateHomeScreenInputBoundary; 
+    private UpdateHomeScreenInputBoundary updateHomeScreenInputBoundary;
+    private final GetCustomerTypeInputBoundary getCustomerTypeUseCase;
+    private final GetNationalityInputBoundary getNationalityUseCase;
     private boolean isOpen = false;
     private boolean isSuccess = false;
     
     public CreateScreenPresenter(
             CreateInvoiceScreen createInvoiceScreen, 
-            CreateInvoiceInputBoundary createInvoiceUseCase
+            CreateInvoiceInputBoundary createInvoiceUseCase,
+            GetCustomerTypeInputBoundary getCustomerTypeUseCase,
+            GetNationalityInputBoundary getNationalityUseCase
     ) {
         this.view = createInvoiceScreen;
         this.createInvoiceUseCase = createInvoiceUseCase;
+        this.getCustomerTypeUseCase = getCustomerTypeUseCase;
+        this.getNationalityUseCase = getNationalityUseCase;
     }
     
     @Override
@@ -67,5 +74,23 @@ public class CreateScreenPresenter implements OpenCreateScreenOutputBoundary, Cr
 
     public void updateHomeScreen() {
         updateHomeScreenInputBoundary.execute();
+    }
+
+    @Override
+    public void setCustomerType(List<String> customerTypes) {
+        view.setCustomerType(customerTypes);
+    }
+
+    public void getCustomerType() {
+        getCustomerTypeUseCase.execute();
+    }
+
+    @Override
+    public void setNationality(List<String> nationality) {
+        view.setNationality(nationality);
+    }
+
+    public void getNationality() {
+        getNationalityUseCase.execute();
     }
 }
