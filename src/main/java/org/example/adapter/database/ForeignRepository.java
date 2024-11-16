@@ -194,4 +194,24 @@ public class ForeignRepository implements ForeignInvoiceRepository {
         }
         return null;
     }
+
+    @Override
+    public List<Object[]> countInvoicesByMonth() {
+        String sql = "SELECT DATE_FORMAT(invoiceDate, '%Y-%m') AS month, COUNT(*) AS count " +
+                "FROM ForeignInvoice " +
+                "GROUP BY month";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+            List<Object[]> results = new java.util.ArrayList<>();
+            while (resultSet.next()) {
+                String month = resultSet.getString("month");
+                int count = resultSet.getInt("count");
+                results.add(new Object[]{month, count});
+            }
+            return results;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to fetch invoice counts by month", e);
+        }
+    }
 }

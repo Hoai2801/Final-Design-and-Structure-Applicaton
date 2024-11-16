@@ -2,15 +2,14 @@ package org.example;
 
 import org.example.adapter.database.ForeignRepository;
 import org.example.adapter.database.VietnameseRepository;
+import org.example.adapter.presenter.ChartPresenter;
 import org.example.adapter.presenter.HomePresenter;
 import org.example.adapter.presenter.UpdateScreenPresenter;
+import org.example.adapter.ui.ChartScreen;
 import org.example.adapter.ui.CreateInvoiceScreen;
 import org.example.adapter.ui.HomeUI;
 import org.example.adapter.presenter.CreateScreenPresenter;
 import org.example.adapter.ui.UpdateInvoiceScreen;
-import org.example.domain.boundaries.in.UpdateHomeScreenInputBoundary;
-import org.example.domain.boundaries.out.GetTotalInvoicesOfCustomerTypeOutputBoundary;
-import org.example.domain.boundaries.out.OpenUpdateScreenOutputBoundary;
 import org.example.domain.usecases.*;
 
 public class Main {
@@ -46,15 +45,21 @@ public class Main {
                 null,
                 null,
                 null,
+                null,
                 null
         );
         
         UpdateHomeScreenUseCase updateHomeScreenInputBoundary = new UpdateHomeScreenUseCase(homePresenter);
         updateScreenPresenter.setUpdateHomeScreenInputBoundary(updateHomeScreenInputBoundary);
+        updateInvoiceScreen.setPresenter(updateScreenPresenter);
         createScreenPresenter.setUpdateHomeScreenInputBoundary(updateHomeScreenInputBoundary);
         createInvoiceScreen.setPresenter(createScreenPresenter);
-        updateInvoiceScreen.setPresenter(updateScreenPresenter);
         
+        ChartScreen chartScreen = new ChartScreen();
+        ChartPresenter chartPresenter = new ChartPresenter(chartScreen, null);
+        GetAnalystUseCase getAnalystUseCase = new GetAnalystUseCase(chartPresenter, vietnameseRepository, foreignRepository);
+        chartPresenter = new ChartPresenter(chartScreen, getAnalystUseCase);
+        chartScreen.setPresenter(chartPresenter);
         
         GetTotalInvoicesUseCase getTotalInvoicesUseCase = new GetTotalInvoicesUseCase(homePresenter, vietnameseRepository, foreignRepository);
         GetTotalInvoicesOfCustomerTypeUseCase getTotalInvoicesOfCustomerTypeUseCase
@@ -63,6 +68,7 @@ public class Main {
         DeleteInvoiceByIdUseCase deleteInvoiceByIdUseCase = new DeleteInvoiceByIdUseCase(homePresenter, vietnameseRepository, foreignRepository);
         OpenUpdateScreenUseCase openUpdateScreenUseCase = new OpenUpdateScreenUseCase(updateScreenPresenter); 
         SearchInvoiceByNameUseCase searchInvoiceByNameUseCase = new SearchInvoiceByNameUseCase(homePresenter, vietnameseRepository, foreignRepository);
+        OpenChartScreenUseCase openChartScreenUseCase = new OpenChartScreenUseCase(chartScreen);
         homePresenter = new HomePresenter(
                 homeUI, 
                 getTotalInvoicesUseCase, 
@@ -71,7 +77,8 @@ public class Main {
                 deleteInvoiceByIdUseCase,
                 openUpdateScreenUseCase,
                 openCreateScreenUseCase,
-                searchInvoiceByNameUseCase
+                searchInvoiceByNameUseCase,
+                openChartScreenUseCase
         );
         homeUI.setPresenter(homePresenter);
         homeUI.init();

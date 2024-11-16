@@ -17,4 +17,5 @@ public interface VietnameseInvoiceRepository {
     VietnameseInvoice getInvoiceById(int invoiceId);
 
     boolean updateInvoice(VietnameseInvoice existingInvoice);
+    List<Object[]> countInvoicesByMonth();
 }

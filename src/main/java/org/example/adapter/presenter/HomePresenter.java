@@ -2,6 +2,7 @@ package org.example.adapter.presenter;
 
 import org.example.adapter.ui.HomeUI;
 import org.example.domain.boundaries.in.GetTotalInvoiceInputBoundary;
+import org.example.domain.boundaries.in.OpenChartScreenInputBoundary;
 import org.example.domain.boundaries.in.UpdateHomeScreenInputBoundary;
 import org.example.domain.boundaries.out.*;
 import org.example.domain.entities.dtos.InvoiceDTO;
@@ -26,6 +27,8 @@ public class HomePresenter implements
     private final OpenUpdateScreenUseCase openUpdateScreenUseCase;
     private final OpenCreateScreenUseCase openCreateScreenUseCase;
     private final SearchInvoiceByNameUseCase searchInvoiceByNameUseCase;
+    OpenChartScreenInputBoundary openChartScreenInputBoundary;
+    
     public HomePresenter(
             HomeUI homeUI,
             GetTotalInvoiceInputBoundary getTotalInvoiceUseCase,
@@ -34,7 +37,8 @@ public class HomePresenter implements
             DeleteInvoiceByIdUseCase deleteInvoiceByIdUseCase,
             OpenUpdateScreenUseCase openUpdateScreenUseCase,
             OpenCreateScreenUseCase openCreateScreenUseCase,
-            SearchInvoiceByNameUseCase searchInvoiceByNameUseCase
+            SearchInvoiceByNameUseCase searchInvoiceByNameUseCase,
+            OpenChartScreenInputBoundary openChartScreenInputBoundary
     ) {
         this.homeUI = homeUI;
         this.getTotalInvoiceUseCase = getTotalInvoiceUseCase;
@@ -44,6 +48,7 @@ public class HomePresenter implements
         this.openCreateScreenUseCase = openCreateScreenUseCase;
         this.openUpdateScreenUseCase = openUpdateScreenUseCase;
         this.searchInvoiceByNameUseCase = searchInvoiceByNameUseCase;
+        this.openChartScreenInputBoundary = openChartScreenInputBoundary;
     }
     
     public void getTotalInvoices() {
@@ -114,5 +119,9 @@ public class HomePresenter implements
 
     public void searchInvoice(String name) {
         searchInvoiceByNameUseCase.execute(name);
+    }
+
+    public void openChartScreen() {
+        openChartScreenInputBoundary.execute();
     }
 }

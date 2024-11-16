@@ -34,9 +34,9 @@ public class HomeUI extends JFrame {
         mainPanel.setPreferredSize(new Dimension(1000, 600));
 
         // Title Text
-        JLabel titleText = new JLabel("Chuong mat");
+        JLabel titleText = new JLabel("Chướng mắt");
         titleText.setFont(new Font("Arial", Font.BOLD, 23));
-        titleText.setBounds(14, 10, 200, 30);
+        titleText.setBounds(40, 10, 200, 30);
         mainPanel.add(titleText);
 
         // "Create" Button
@@ -114,16 +114,16 @@ public class HomeUI extends JFrame {
 
         // Add right-click context menu
         JPopupMenu popupMenu = new JPopupMenu();
-        JMenuItem viewItem = new JMenuItem("View Invoice");
+//        JMenuItem viewItem = new JMenuItem("View Invoice");
         JMenuItem editItem = new JMenuItem("Edit Invoice");
         JMenuItem deleteItem = new JMenuItem("Delete Invoice");
 
         // Add action listeners for each menu item
-        viewItem.addActionListener(e -> viewSelectedInvoice());
+//        viewItem.addActionListener(e -> viewSelectedInvoice());
         editItem.addActionListener(e -> editSelectedInvoice());
         deleteItem.addActionListener(e -> deleteSelectedInvoice());
 
-        popupMenu.add(viewItem);
+//        popupMenu.add(viewItem);
         popupMenu.add(editItem);
         popupMenu.add(deleteItem);
 
@@ -151,6 +151,11 @@ public class HomeUI extends JFrame {
                 }
             }
         });
+        
+        JButton chartBtn = new JButton("Chart");
+        chartBtn.setBounds(39, 420, 100, 40);
+        chartBtn.addActionListener(e -> showChart());
+        this.add(chartBtn);
 
         // Add main panel to frame
         this.add(mainPanel);
@@ -160,6 +165,10 @@ public class HomeUI extends JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+    private void showChart() {
+        homePresenter.openChartScreen();
     }
 
     private void viewSelectedInvoice() {

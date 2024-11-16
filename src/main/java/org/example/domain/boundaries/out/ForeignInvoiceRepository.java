@@ -19,4 +19,5 @@ public interface ForeignInvoiceRepository {
     boolean deleteInvoiceById(int invoiceId);
 
     ForeignInvoice getInvoiceById(int invoiceId);
+    List<Object[]> countInvoicesByMonth();
 }
