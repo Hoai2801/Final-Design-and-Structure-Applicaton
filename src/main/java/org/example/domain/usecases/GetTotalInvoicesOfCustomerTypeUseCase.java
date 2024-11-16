@@ -19,6 +19,7 @@ public class GetTotalInvoicesOfCustomerTypeUseCase implements GetTotalInvoicesOf
         this.vietnameseRepository = vietnameseRepository;
         this.foreignRepository = foreignRepository;
     }
+    
     @Override
     public void execute() {
         int vietnameseTotal = vietnameseRepository.getTotalAmountOfInvoice();

@@ -9,9 +9,9 @@ import org.example.domain.entities.VietnameseInvoice;
 import org.example.domain.entities.dtos.InvoiceDTO;
 
 public class GetInvoiceByIdUseCase implements GetInvoiceByIdInputBoundary {
-    private GetInvoiceByIdOutputBoundary outputBoundary; 
-    private VietnameseRepository vietnameseRepository;
-    private ForeignRepository foreignRepository; 
+    private final GetInvoiceByIdOutputBoundary outputBoundary; 
+    private final VietnameseRepository vietnameseRepository;
+    private final ForeignRepository foreignRepository; 
     
     public GetInvoiceByIdUseCase(GetInvoiceByIdOutputBoundary outputBoundary, VietnameseRepository vietnameseRepository, ForeignRepository foreignRepository) {
         this.outputBoundary = outputBoundary;

@@ -11,7 +11,7 @@ import org.example.domain.entities.dtos.InvoiceDTO;
 import java.util.List;
 
 public class GetListInvoicesUseCase implements GetListInvoicesInputBoundary {
-    private GetListInvoicesOutputBoundary outputBoundary;
+    private final GetListInvoicesOutputBoundary outputBoundary;
     private final VietnameseRepository vietnameseRepository;
     private final ForeignRepository foreignRepository;
     

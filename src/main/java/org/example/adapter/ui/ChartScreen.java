@@ -52,9 +52,7 @@ public class ChartScreen extends JFrame implements OpenChartScreenOutputBoundary
 
     public void showAnalyst(AnalystResponse analystResponse) {
         invoiceDataVietnamese = analystResponse.getInvoiceCountsByMonthVietnamese();
-        System.out.println(invoiceDataVietnamese);
         invoiceDataForeign = analystResponse.getInvoiceCountsByMonthForeign();
-        System.out.println(invoiceDataForeign);
         repaint();
     }
 

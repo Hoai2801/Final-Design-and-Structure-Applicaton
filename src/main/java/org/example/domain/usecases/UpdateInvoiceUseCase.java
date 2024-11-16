@@ -8,6 +8,7 @@ import org.example.domain.entities.ForeignInvoice;
 import org.example.domain.entities.VietnameseInvoice;
 import org.example.domain.entities.models.RequestModel;
 import org.example.domain.entities.models.ResponseModel;
+import org.example.domain.util.Valid;
 
 public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     private final UpdateInvoiceOutputBoundary outputBoundary;
@@ -22,6 +23,11 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     
     @Override
     public void updateInvoice(RequestModel requestModel) {
+        boolean isvalid = Valid.valid(requestModel);
+        if (!isvalid) {
+            outputBoundary.updateFail(new ResponseModel(false, "Invoice update failed"));
+            return;
+        }
         if (requestModel.getNationality().equals("Vietnam")) {
             VietnameseInvoice existingInvoice = vietnameseInvoiceRepository.getInvoiceById(requestModel.getInvoiceId());
             if (existingInvoice != null) {
