@@ -1,5 +1,6 @@
 package org.example.adapter.ui;
 
+import org.example.adapter.controller.HomeController;
 import org.example.adapter.presenter.CreateScreenPresenter;
 import org.example.adapter.presenter.HomePresenter;
 import org.example.adapter.presenter.UpdateScreenPresenter;
@@ -15,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class HomeUI extends JFrame {
-    private HomePresenter homePresenter;
+    private HomeController homeController;
     JLabel labelTotalInvoices;
     JLabel labelTotalInvoicesOfVietnamese;
     JLabel labelTotalInvoicesOfForeign;
@@ -46,7 +47,7 @@ public class HomeUI extends JFrame {
         createButton.setForeground(Color.WHITE);
         createButton.setFocusPainted(false);
         createButton.addActionListener(e -> {
-            homePresenter.openCreateScreen();
+            homeController.openCreateScreen();
         });
 
         mainPanel.add(createButton);
@@ -63,7 +64,7 @@ public class HomeUI extends JFrame {
         searchButton.setForeground(Color.WHITE);
         searchButton.setFocusPainted(false);
         searchButton.addActionListener(e -> {
-            homePresenter.searchInvoice(searchBar.getText());
+            homeController.searchInvoice(searchBar.getText());
         });
         mainPanel.add(searchButton);
 
@@ -77,7 +78,7 @@ public class HomeUI extends JFrame {
         labelTotalInvoices.setBorder(new EmptyBorder(10, 10, 10, 10));  // Label padding
         mainPanel.add(labelTotalInvoices);
 
-        homePresenter.getTotalInvoices();
+        homeController.getTotalInvoices();
 
         // Label 2: "Tong tien thang nay"
         labelTotalInvoicesOfVietnamese = new JLabel("Tổng hóa đơn khách Việt:");
@@ -99,7 +100,7 @@ public class HomeUI extends JFrame {
         labelTotalInvoicesOfForeign.setBorder(new EmptyBorder(10, 10, 10, 10));  // Label padding
         mainPanel.add(labelTotalInvoicesOfForeign);
 
-        homePresenter.getTotalInvoicesOfCustomerType();
+        homeController.getTotalInvoicesOfCustomerType();
 
         // Table
         String[] columnNames = {"Invoice ID","Customer ID", "Full Name", "Invoice Date", "Nationality", "Customer Type", "Quantity", "Price", "Quota", "Total"};
@@ -110,7 +111,7 @@ public class HomeUI extends JFrame {
         
         mainPanel.add(tableScrollPane);
 
-        homePresenter.getListInvoices();
+        homeController.getListInvoices();
 
         // Add right-click context menu
         JPopupMenu popupMenu = new JPopupMenu();
@@ -168,7 +169,11 @@ public class HomeUI extends JFrame {
     }
 
     private void showChart() {
-        homePresenter.openChartScreen();
+        homeController.openChartScreen();
+    }
+    
+    public void setHomeController(HomeController homeController) {
+        this.homeController = homeController;
     }
 
     private void viewSelectedInvoice() {
@@ -187,7 +192,7 @@ public class HomeUI extends JFrame {
             int customerId = Integer.parseInt(String.valueOf(tableModel.getValueAt(selectedRow, 0)));
             String type = tableModel.getValueAt(selectedRow, 4).equals("Vietnam") ? "Vietnam" : "Foreign";
 //            JOptionPane.showMessageDialog(this, "Editing invoice for customer ID: " + customerId);
-            homePresenter.openUpdateScreen(customerId, type);
+            homeController.openUpdateScreen(customerId, type);
         }
     }
 
@@ -199,19 +204,13 @@ public class HomeUI extends JFrame {
             String type = tableModel.getValueAt(selectedRow, 4).equals("Vietnam") ? "Vietnam" : "Foreign";
             int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete invoice for customer ID: " + customerId + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                homePresenter.deleteInvoice(customerId, type);
+                homeController.deleteInvoice(customerId, type);
             }
         }
     }
 
     public void showTotalInvoices(int i) {
         labelTotalInvoices.setText("Tổng hóa đơn: " + i);
-    }
-
-    public void setPresenter(
-            HomePresenter homePresenter
-    ) {
-        this.homePresenter = homePresenter;
     }
 
     public void showTotalInvoicesVietnamCustomer(int i) {
@@ -250,8 +249,8 @@ public class HomeUI extends JFrame {
     }
 
     public void updateHomeScreen() {
-        homePresenter.getListInvoices();
-        homePresenter.getTotalInvoices();
-        homePresenter.getTotalInvoicesOfCustomerType();
+        homeController.getListInvoices();
+        homeController.getTotalInvoices();
+        homeController.getTotalInvoicesOfCustomerType();
     }
 }

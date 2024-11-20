@@ -14,37 +14,19 @@ import java.util.List;
 
 public class CreateScreenPresenter implements OpenCreateScreenOutputBoundary, CreateInvoiceOutputBoundary, GetCustomerTypeOutputBoundary, GetNationalityOutputBoundary {
     private final CreateInvoiceScreen view;
-    private final CreateInvoiceInputBoundary createInvoiceUseCase;
     private UpdateHomeScreenInputBoundary updateHomeScreenInputBoundary;
-    private final GetCustomerTypeInputBoundary getCustomerTypeUseCase;
-    private final GetNationalityInputBoundary getNationalityUseCase;
+    
     private boolean isOpen = false;
     private boolean isSuccess = false;
     
-    public CreateScreenPresenter(
-            CreateInvoiceScreen createInvoiceScreen, 
-            CreateInvoiceInputBoundary createInvoiceUseCase,
-            GetCustomerTypeInputBoundary getCustomerTypeUseCase,
-            GetNationalityInputBoundary getNationalityUseCase
-    ) {
+    public CreateScreenPresenter(CreateInvoiceScreen createInvoiceScreen) {
         this.view = createInvoiceScreen;
-        this.createInvoiceUseCase = createInvoiceUseCase;
-        this.getCustomerTypeUseCase = getCustomerTypeUseCase;
-        this.getNationalityUseCase = getNationalityUseCase;
     }
     
     @Override
     public void openCreateScreen() {
         view.open();
         isOpen = true;
-    }
-
-    public void setUpdateHomeScreenInputBoundary(UpdateHomeScreenInputBoundary updateHomeScreenInputBoundary) {
-        this.updateHomeScreenInputBoundary = updateHomeScreenInputBoundary;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
     }
 
     @Override
@@ -60,20 +42,8 @@ public class CreateScreenPresenter implements OpenCreateScreenOutputBoundary, Cr
         showNotification(error);
     }
     
-    public boolean isSuccess() {
-        return isSuccess;
-    }
-    
     public void showNotification(ResponseModel message) {
         view.showNotification(message);
-    }
-
-    public void createInvoice(RequestModel requestModel) {
-        createInvoiceUseCase.createInvoice(requestModel);
-    }
-
-    public void updateHomeScreen() {
-        updateHomeScreenInputBoundary.execute();
     }
 
     @Override
@@ -81,16 +51,9 @@ public class CreateScreenPresenter implements OpenCreateScreenOutputBoundary, Cr
         view.setCustomerType(customerTypes);
     }
 
-    public void getCustomerType() {
-        getCustomerTypeUseCase.execute();
-    }
-
     @Override
     public void setNationality(List<String> nationality) {
         view.setNationality(nationality);
     }
-
-    public void getNationality() {
-        getNationalityUseCase.execute();
-    }
+    
 }

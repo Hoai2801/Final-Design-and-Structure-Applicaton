@@ -6,6 +6,7 @@ import org.example.domain.boundaries.out.UpdateInvoiceOutputBoundary;
 import org.example.domain.boundaries.out.VietnameseInvoiceRepository;
 import org.example.domain.entities.ForeignInvoice;
 import org.example.domain.entities.VietnameseInvoice;
+import org.example.domain.entities.dtos.ValidResult;
 import org.example.domain.entities.models.RequestModel;
 import org.example.domain.entities.models.ResponseModel;
 import org.example.domain.util.Valid;
@@ -23,10 +24,9 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     
     @Override
     public void updateInvoice(RequestModel requestModel) {
-        boolean isvalid = Valid.valid(requestModel);
-        if (!isvalid) {
-            outputBoundary.updateFail(new ResponseModel(false, "Invoice update failed"));
-            return;
+        ValidResult validResult = Valid.valid(requestModel);
+        if (!validResult.isValid()) {
+            throw new RuntimeException(validResult.getError()); 
         }
         if (requestModel.getNationality().equals("Vietnam")) {
             VietnameseInvoice existingInvoice = vietnameseInvoiceRepository.getInvoiceById(requestModel.getInvoiceId());
@@ -40,12 +40,12 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
                 existingInvoice.setQuota(requestModel.getQuota());
                 boolean result = vietnameseInvoiceRepository.updateInvoice(existingInvoice);
                 if (result) {
-                    outputBoundary.updateSuccess(new ResponseModel(true, "Invoice updated successfully"));
+                    outputBoundary.update(new ResponseModel(true, "Invoice updated successfully"));
                 } else {
-                    outputBoundary.updateFail(new ResponseModel(false, "Invoice update failed"));
+                    throw new RuntimeException("Invoice update failed"); 
                 }
             } else {
-                outputBoundary.updateFail(new ResponseModel(false, "Invoice not found"));
+                throw new RuntimeException("Invoice not found"); 
             }
         } else {
             ForeignInvoice existingInvoice = foreignInvoiceRepository.getInvoiceById(requestModel.getInvoiceId());
@@ -58,13 +58,12 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
                 existingInvoice.setPrice(requestModel.getPrice());
                 boolean result = foreignInvoiceRepository.updateInvoice(existingInvoice);
                 if (result) {
-                    outputBoundary.updateSuccess(new ResponseModel(true, "Invoice updated successfully"));
+                    outputBoundary.update(new ResponseModel(true, "Invoice updated successfully"));
                 } else {
-                    outputBoundary.updateFail(new ResponseModel(false, "Invoice update failed"));
+                    throw new RuntimeException("Invoice update failed");
                 }
-                outputBoundary.updateSuccess(new ResponseModel(true, "Invoice updated successfully"));
             } else {
-                outputBoundary.updateFail(new ResponseModel(false, "Invoice not found"));
+                throw new RuntimeException("Invoice not found");
             }
         }
     }

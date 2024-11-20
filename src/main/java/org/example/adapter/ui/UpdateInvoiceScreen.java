@@ -1,8 +1,6 @@
 package org.example.adapter.ui;
 
-import org.example.adapter.controller.InvoiceController;
-import org.example.adapter.presenter.UpdateScreenPresenter;
-import org.example.adapter.presenter.HomePresenter;
+import org.example.adapter.controller.UpdateController;
 import org.example.domain.entities.dtos.InvoiceDTO;
 import org.example.domain.entities.models.RequestModel;
 import org.example.domain.entities.models.ResponseModel;
@@ -10,19 +8,19 @@ import org.example.domain.entities.models.ResponseModel;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.List;
 
 public class UpdateInvoiceScreen extends JFrame {
-    private UpdateScreenPresenter presenter;
-    private HomePresenter homePresenter;
+    private UpdateController controller;
     private JTextField customerIdField;
     private JTextField nameField;
     private JTextField dateField;
     private JTextField unitPriceField;
     private JTextField quantityField;
     private JTextField limitField; // Only for Vietnamese Customer
-    private JTextField customerTypeField; // Only for Vietnamese Customer
-    private JTextField nationalityField; // Only for Foreign Customer
-    private JComboBox<String> customerTypeCombo;
+    private JComboBox<String> customerTypeCombo; // Only for Vietnamese Customer
+    private JComboBox<String> nationalityCombo; // Only for Foreign Customer
+    private JComboBox<String> invoiceTypeCombo;
     private JButton updateButton;
     private int invoiceId; // ID of the invoice being updated
 
@@ -41,10 +39,10 @@ public class UpdateInvoiceScreen extends JFrame {
         gbc.gridy = 0;
         add(customerTypeLabel, gbc);
 
-        customerTypeCombo = new JComboBox<>(new String[]{"Vietnamese", "Foreign"});
+        invoiceTypeCombo = new JComboBox<>(new String[]{"Vietnamese", "Foreign"});
         gbc.gridx = 1;
         gbc.gridy = 0;
-        add(customerTypeCombo, gbc);
+        add(invoiceTypeCombo, gbc);
 
         JLabel customerIdLabel = new JLabel("Customer ID:");
         gbc.gridx = 0;
@@ -111,70 +109,35 @@ public class UpdateInvoiceScreen extends JFrame {
         gbc.gridy = 7;
         add(customerTypeSpecificLabel, gbc);
 
-        customerTypeField = new JTextField(20);
+        customerTypeCombo = new JComboBox<>();
         gbc.gridx = 1;
         gbc.gridy = 7;
-        add(customerTypeField, gbc);
+        add(customerTypeCombo, gbc);
 
         JLabel nationalityLabel = new JLabel("Nationality (Foreign only):");
         gbc.gridx = 0;
         gbc.gridy = 8;
         add(nationalityLabel, gbc);
 
-        nationalityField = new JTextField(20);
+        nationalityCombo = new JComboBox<>();
         gbc.gridx = 1;
         gbc.gridy = 8;
-        add(nationalityField, gbc);
+        add(nationalityCombo, gbc);
 
         updateButton = new JButton("Update Invoice");
         gbc.gridx = 1;
         gbc.gridy = 9;
         add(updateButton, gbc);
 
-        // Hide fields specific to each customer type initially
-//        toggleFieldsVisibility(false);
-
-//        customerTypeCombo.addActionListener(e -> toggleFieldsVisibility("Vietnamese".equals(customerTypeCombo.getSelectedItem())));
-
         // Add ActionListener to the update button
         updateButton.addActionListener(e -> updateInvoice());
         
     }
 
-//    private void toggleFieldsVisibility(boolean isVietnamese) {
-//        limitField.setVisible(isVietnamese);
-//        customerTypeField.setVisible(isVietnamese);
-//        nationalityField.setVisible(!isVietnamese);
-//        revalidate();
-//        repaint();
-//    }
 
-    public void setPresenter(UpdateScreenPresenter presenter) {
-        this.presenter = presenter;
-    }
-
-    public void setHomePresenter(HomePresenter homePresenter) {
-        this.homePresenter = homePresenter;
-    }
-
-    public void open() {
+    public void open(int invoiceId, String type) {
         setVisible(true);
-    }
-
-    private void fillForm(RequestModel invoiceData) {
-        customerTypeCombo.setSelectedItem(invoiceData.getCustomerType());
-        customerIdField.setText(String.valueOf(invoiceData.getCustomerId()));
-        nameField.setText(invoiceData.getFullName());
-        dateField.setText(invoiceData.getInvoiceDate().toString());
-        unitPriceField.setText(String.valueOf(invoiceData.getPrice()));
-        quantityField.setText(String.valueOf(invoiceData.getQuantity()));
-        if ("Vietnamese".equals(invoiceData.getCustomerType())) {
-            limitField.setText(String.valueOf(invoiceData.getQuota()));
-            customerTypeField.setText(invoiceData.getCustomerType());
-        } else {
-            nationalityField.setText(invoiceData.getNationality());
-        }
-//        toggleFieldsVisibility("Vietnamese".equals(invoiceData.getCustomerType()));
+        controller.loadDateForView(invoiceId, type);
     }
 
     private void updateInvoice() {
@@ -184,18 +147,18 @@ public class UpdateInvoiceScreen extends JFrame {
             LocalDate date = LocalDate.parse(dateField.getText());
             double unitPrice = Double.parseDouble(unitPriceField.getText());
             double quantity = Double.parseDouble(quantityField.getText());
-            String customerType = (String) customerTypeCombo.getSelectedItem();
+            String customerType = (String) invoiceTypeCombo.getSelectedItem();
 
             RequestModel requestModel;
             if ("Vietnamese".equals(customerType)) {
                 double consumptionLimit = Double.parseDouble(limitField.getText());
-                String customerCategory = customerTypeField.getText();
+                String customerCategory = customerTypeCombo.getSelectedItem().toString();
                 requestModel = new RequestModel(invoiceId, customerId, name, customerCategory, "Vietnam", date, quantity, unitPrice, consumptionLimit);
             } else {
-                String nationality = nationalityField.getText();
+                String nationality = nationalityCombo.getSelectedItem().toString();
                 requestModel = new RequestModel(invoiceId, customerId, name, "none", nationality, date, quantity, unitPrice, 0);
             }
-            presenter.updateInvoice(requestModel);
+            controller.updateInvoice(requestModel);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Input invalid", "Fail", JOptionPane.ERROR_MESSAGE);
         }
@@ -204,7 +167,6 @@ public class UpdateInvoiceScreen extends JFrame {
     public void showNotification(ResponseModel message) {
         if (message.isSuccess()) {
             JOptionPane.showMessageDialog(null, message.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-            presenter.updateHomeScreen();
         } else {
             JOptionPane.showMessageDialog(null, message.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -212,27 +174,46 @@ public class UpdateInvoiceScreen extends JFrame {
 
     public void fetchInvoice(InvoiceDTO invoice) {
         invoiceId = invoice.getInvoiceId();
-        customerTypeCombo.setSelectedItem(invoice.getCustomerType());
-        customerTypeCombo.setEnabled(false);
+        invoiceTypeCombo.setSelectedItem(invoice.getCustomerType());
+        invoiceTypeCombo.setEnabled(false);
         customerIdField.setText(String.valueOf(invoice.getCustomerId()));
         nameField.setText(invoice.getFullName());
         dateField.setText(invoice.getInvoiceDate().toString());
+        limitField.setText(String.valueOf(invoice.getQuota()));
         unitPriceField.setText(String.valueOf(invoice.getPrice()));
         quantityField.setText(String.valueOf(invoice.getQuantity()));
         System.out.println(invoice.getNationality());
         if ("Vietnam".equals(invoice.getNationality())) {
+            invoiceTypeCombo.setSelectedIndex(0);
             limitField.setText(String.valueOf(invoice.getQuota()));
-            customerTypeField.setText(invoice.getCustomerType());
+            customerTypeCombo.setSelectedItem(invoice.getCustomerType());
             limitField.setVisible(true);
-            customerTypeField.setVisible(true);
-            nationalityField.setVisible(false);
-            
+            customerTypeCombo.setVisible(true);
+            nationalityCombo.setVisible(false);
         } else {
-            nationalityField.setText(invoice.getNationality());
-            nationalityField.setVisible(true);
+            invoiceTypeCombo.setSelectedIndex(1);
+            nationalityCombo.setSelectedItem(invoice.getNationality());
+            nationalityCombo.setVisible(true);
             limitField.setVisible(false);
-            customerTypeField.setVisible(false);
+            customerTypeCombo.setVisible(false);
         }
-//        toggleFieldsVisibility("Vietnamese".equals(invoice.getCustomerType()));
+    }
+
+    public void setCustomerType(List<String> customerTypes) {
+        customerTypeCombo.removeAllItems();
+        for (String customerType : customerTypes) {
+            customerTypeCombo.addItem(customerType);
+        }
+    }
+
+    public void setNationality(List<String> nationality) {
+        nationalityCombo.removeAllItems();
+        for (String national : nationality) {
+            nationalityCombo.addItem(national);
+        }
+    }
+
+    public void setController(UpdateController updateController) {
+        this.controller = updateController;
     }
 }

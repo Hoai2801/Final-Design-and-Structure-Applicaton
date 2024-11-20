@@ -9,10 +9,6 @@ public class OpenUpdateScreenUseCase implements OpenUpdateScreenInputBoundary {
     public OpenUpdateScreenUseCase(OpenUpdateScreenOutputBoundary outputBoundary) {
         this.outputBoundary = outputBoundary;
     }
-    @Override
-    public void execute() {
-        outputBoundary.openUpdateScreen();
-    }
 
     @Override
     public void execute(int customerId, String type) {

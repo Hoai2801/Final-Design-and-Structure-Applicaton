@@ -1,5 +1,7 @@
 package org.example.adapter.ui;
 
+import org.example.adapter.controller.CreateController;
+import org.example.adapter.controller.HomeController;
 import org.example.adapter.presenter.CreateScreenPresenter;
 import org.example.domain.entities.models.RequestModel;
 import org.example.domain.entities.models.ResponseModel;
@@ -12,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class CreateInvoiceScreen extends JFrame {
-    private CreateScreenPresenter presenter;
+    private CreateController createController;
     private JTextField customerIdField;
     private JTextField nameField;
     private JTextField dateField;
@@ -170,49 +172,32 @@ public class CreateInvoiceScreen extends JFrame {
     private void saveInvoice() {
         try {
             int customerId = Integer.parseInt(customerIdField.getText());
-            if (customerId <= 0) {
-                JOptionPane.showMessageDialog(null, "ID must be greater than 0", "Fail", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
             String name = nameField.getText();
             LocalDate date = LocalDate.parse(dateField.getText());
             double unitPrice = Double.parseDouble(unitPriceField.getText());
-            if (unitPrice <= 0) {
-                JOptionPane.showMessageDialog(null, "price must be greater than 0", "Fail", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
             double quantity = Double.parseDouble(quantityField.getText());
-            if (quantity <= 0) {
-                JOptionPane.showMessageDialog(null, "quantity must be greater than 0", "Fail", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
             String customerType = (String) invoiceTypeCombo.getSelectedItem();
-
             if ("Vietnamese".equals(customerType)) {
                 double consumptionLimit = Double.parseDouble(limitField.getText());
                 String customerCategory = customerTypeCombo.getSelectedItem().toString();
                 
                 RequestModel requestModel = new RequestModel(0, customerId, name, customerCategory, "Vietnam", date, quantity, unitPrice, consumptionLimit);
-                presenter.createInvoice(requestModel);
+                createController.createInvoice(requestModel);
             } else {
                 String nationality = nationalityCombo.getSelectedItem().toString();
                 
                 RequestModel requestModel = new RequestModel(0, customerId, name, "none", nationality, date, quantity, unitPrice, 0);
-                presenter.createInvoice(requestModel);
+                createController.createInvoice(requestModel);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Input invalid", "Fail", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void setPresenter(CreateScreenPresenter presenter) {
-        this.presenter = presenter;
-    }
-
     public void open() {
         setVisible(true);
-        presenter.getCustomerType();
-        presenter.getNationality();
+        createController.getCustomerType();
+        createController.getNationality();
     }
     
     public void clearForm() {
@@ -231,7 +216,6 @@ public class CreateInvoiceScreen extends JFrame {
         if (message.isSuccess()) {
             JOptionPane.showMessageDialog(null, message.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             clearForm();
-            presenter.updateHomeScreen();
         } else {
             JOptionPane.showMessageDialog(null, message.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -249,5 +233,9 @@ public class CreateInvoiceScreen extends JFrame {
         for (String national : nationality) {
             nationalityCombo.addItem(national);
         }
+    }
+
+    public void setController(CreateController createController) {
+        this.createController = createController;
     }
 }

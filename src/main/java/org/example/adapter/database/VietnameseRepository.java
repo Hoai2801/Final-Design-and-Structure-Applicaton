@@ -114,21 +114,6 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
     }
 
     @Override
-    public int getTotalAmountOfInvoiceByMonth(int month) {
-        String sql = "SELECT SUM(quantity * price) FROM VietnameseInvoice WHERE MONTH(invoiceDate) = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, month);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    @Override
     public List<VietnameseInvoice> findInvoices(String name) {
         String sql = "SELECT * FROM VietnameseInvoice WHERE fullName LIKE ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {

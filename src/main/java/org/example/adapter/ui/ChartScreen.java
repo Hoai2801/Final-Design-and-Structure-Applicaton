@@ -1,6 +1,6 @@
 package org.example.adapter.ui;
 
-import org.example.adapter.presenter.ChartPresenter;
+import org.example.adapter.controller.ChartController;
 import org.example.domain.boundaries.out.OpenChartScreenOutputBoundary;
 import org.example.domain.entities.models.AnalystResponse;
 
@@ -12,32 +12,12 @@ public class ChartScreen extends JFrame implements OpenChartScreenOutputBoundary
 
     private Map<String, Integer> invoiceDataVietnamese;
     private Map<String, Integer> invoiceDataForeign;
-    private ChartPresenter presenter;
-    
-    public void setPresenter(ChartPresenter presenter) {
-        this.presenter = presenter;
-    } 
+    private ChartController controller;
 
     public ChartScreen() {
-//        this.invoiceData = Map.ofEntries(
-//                Map.entry("Jan", 10),
-//                Map.entry("Feb", 15),
-//                Map.entry("Mar", 20),
-//                Map.entry("Apr", 25),
-//                Map.entry("May", 30),
-//                Map.entry("Jun", 35),
-//                Map.entry("Jul", 40),
-//                Map.entry("Aug", 45),
-//                Map.entry("Sep", 50),
-//                Map.entry("Oct", 55),
-//                Map.entry("Nov", 60),
-//                Map.entry("Dec", 65)
-//        );
-        
-
         setTitle("Monthly Invoice Chart");
         setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         ChartPanel chartPanel = new ChartPanel();
@@ -47,13 +27,17 @@ public class ChartScreen extends JFrame implements OpenChartScreenOutputBoundary
     @Override
     public void openChartScreen() {
         setVisible(true);
-        presenter.getAnalyst();
+        controller.getAnalyst();
     }
 
     public void showAnalyst(AnalystResponse analystResponse) {
         invoiceDataVietnamese = analystResponse.getInvoiceCountsByMonthVietnamese();
         invoiceDataForeign = analystResponse.getInvoiceCountsByMonthForeign();
         repaint();
+    }
+    
+    public void setController(ChartController controller) {
+        this.controller = controller;
     }
 
     class ChartPanel extends JPanel {

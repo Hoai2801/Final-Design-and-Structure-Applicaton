@@ -8,6 +8,7 @@ import org.example.domain.entities.ForeignInvoice;
 import org.example.domain.entities.Invoice;
 import org.example.domain.entities.InvoiceFactory;
 import org.example.domain.entities.VietnameseInvoice;
+import org.example.domain.entities.dtos.ValidResult;
 import org.example.domain.entities.models.RequestModel;
 import org.example.domain.entities.models.ResponseModel;
 import org.example.domain.util.Valid;
@@ -29,22 +30,21 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
 
     @Override
     public void createInvoice(RequestModel req) {
-        boolean valid = Valid.valid(req);
-        if (valid) {
-            Invoice invoice = InvoiceFactory.createInvoice(req.getCustomerId(), req.getFullName(), req.getInvoiceDate(), req.getCustomerType(), req.getQuantity(), req.getPrice(), req.getQuota(), req.getNationality());
-            boolean result;
-            if (invoice.getClass().equals(VietnameseInvoice.class)) {
-                result = vietnameseInvoiceRepository.createInvoice((VietnameseInvoice) invoice);
-            } else {
-                result = foreignInvoiceRepository.createInvoice((ForeignInvoice) invoice);
-            }
-            if (result) {
-                outputBoundary.onSuccess(new ResponseModel(true, "Invoice created successfully"));
-            } else {
-                outputBoundary.onError(new ResponseModel(false, "Invoice created failed"));
-            }
+        ValidResult validResult = Valid.valid(req);
+        if (!validResult.isValid()) {
+            throw new RuntimeException(validResult.getError());
+        }
+        Invoice invoice = InvoiceFactory.createInvoice(req.getCustomerId(), req.getFullName(), req.getInvoiceDate(), req.getCustomerType(), req.getQuantity(), req.getPrice(), req.getQuota(), req.getNationality());
+        boolean result;
+        if (invoice.getClass().equals(VietnameseInvoice.class)) {
+            result = vietnameseInvoiceRepository.createInvoice((VietnameseInvoice) invoice);
         } else {
-            outputBoundary.onError(new ResponseModel(false, "Invoice created failed"));
+            result = foreignInvoiceRepository.createInvoice((ForeignInvoice) invoice);
+        }
+        if (result) {
+            outputBoundary.onSuccess(new ResponseModel(true, "Invoice created successfully"));
+        } else {
+            throw new RuntimeException("Invoice creation failed"); 
         }
     }
 }

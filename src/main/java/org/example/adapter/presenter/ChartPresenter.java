@@ -7,19 +7,13 @@ import org.example.domain.entities.models.AnalystResponse;
 
 public class ChartPresenter implements GetAnalystOutputBoundary {
     private final ChartScreen chartScreen; 
-    private final GetAnalystInputBoundary getAnalystInputBoundary;
 
-    public ChartPresenter(ChartScreen chartScreen, GetAnalystInputBoundary getAnalystInputBoundary) {
+    public ChartPresenter(ChartScreen chartScreen) {
         this.chartScreen = chartScreen;
-        this.getAnalystInputBoundary = getAnalystInputBoundary;
     }
     
     @Override
     public void showAnalyst(AnalystResponse analystResponse) {
         chartScreen.showAnalyst(analystResponse);
-    }
-
-    public void getAnalyst() {
-        getAnalystInputBoundary.execute();
     }
 }

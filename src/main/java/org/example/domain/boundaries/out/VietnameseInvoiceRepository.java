@@ -6,8 +6,9 @@ import java.util.List;
 
 public interface VietnameseInvoiceRepository {
     boolean createInvoice(VietnameseInvoice invoice);
+    
     int getTotalAmountOfInvoice();
-    int getTotalAmountOfInvoiceByMonth(int month);
+    
     List<VietnameseInvoice> findInvoices(String name);
 
     List<VietnameseInvoice> getInvoices();
