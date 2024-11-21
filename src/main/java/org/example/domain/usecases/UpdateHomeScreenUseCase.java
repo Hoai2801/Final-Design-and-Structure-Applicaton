@@ -11,7 +11,6 @@ public class UpdateHomeScreenUseCase implements UpdateHomeScreenInputBoundary {
     }
     @Override
     public void execute() {
-        System.out.println("update home");
         outputBoundary.updateHomeScreen();
     }
 }

@@ -29,9 +29,9 @@ public class DeleteInvoiceByIdUseCase implements DeleteInvoiceByIdInputBoundary 
             isSuccess = foreignInvoiceRepository.deleteInvoiceById(invoiceId);
         }
         if (isSuccess) {
-            outputBoundary.onDeleteSuccess(new ResponseModel(true, "Invoice deleted successfully"));
+            outputBoundary.deleteInvoice(new ResponseModel(true, "Invoice deleted successfully"));
         } else {
-            outputBoundary.onDeleteFail(new ResponseModel(false, "Invoice deleted failed"));
+            throw new RuntimeException("Invoice deletion failed");
         }
     }
 }

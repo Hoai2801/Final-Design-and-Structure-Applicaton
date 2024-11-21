@@ -15,7 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class HomeUI extends JFrame {
+public class HomeUI extends JFrame implements Screen {
     private HomeController homeController;
     JLabel labelTotalInvoices;
     JLabel labelTotalInvoicesOfVietnamese;
@@ -78,8 +78,8 @@ public class HomeUI extends JFrame {
         labelTotalInvoices.setBorder(new EmptyBorder(10, 10, 10, 10));  // Label padding
         mainPanel.add(labelTotalInvoices);
 
-        homeController.getTotalInvoices();
-
+//        homeController.getTotalInvoices();
+        
         // Label 2: "Tong tien thang nay"
         labelTotalInvoicesOfVietnamese = new JLabel("Tổng hóa đơn khách Việt:");
         labelTotalInvoicesOfVietnamese.setBounds(250, 90, 260, 60);
@@ -100,7 +100,7 @@ public class HomeUI extends JFrame {
         labelTotalInvoicesOfForeign.setBorder(new EmptyBorder(10, 10, 10, 10));  // Label padding
         mainPanel.add(labelTotalInvoicesOfForeign);
 
-        homeController.getTotalInvoicesOfCustomerType();
+//        homeController.getTotalInvoicesOfCustomerType();
 
         // Table
         String[] columnNames = {"Invoice ID","Customer ID", "Full Name", "Invoice Date", "Nationality", "Customer Type", "Quantity", "Price", "Quota", "Total"};
@@ -111,7 +111,7 @@ public class HomeUI extends JFrame {
         
         mainPanel.add(tableScrollPane);
 
-        homeController.getListInvoices();
+//        homeController.getListInvoices();
 
         // Add right-click context menu
         JPopupMenu popupMenu = new JPopupMenu();
@@ -152,6 +152,8 @@ public class HomeUI extends JFrame {
                 }
             }
         });
+
+        homeController.initHomeScreen();
         
         JButton chartBtn = new JButton("Chart");
         chartBtn.setBounds(39, 420, 100, 40);
@@ -174,15 +176,6 @@ public class HomeUI extends JFrame {
     
     public void setHomeController(HomeController homeController) {
         this.homeController = homeController;
-    }
-
-    private void viewSelectedInvoice() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow != -1) {
-            // Handle view action, for example, show invoice details
-            String customerId = String.valueOf(tableModel.getValueAt(selectedRow, 0));
-            JOptionPane.showMessageDialog(this, "Viewing invoice for customer ID: " + customerId);
-        }
     }
 
     private void editSelectedInvoice() {
@@ -239,18 +232,26 @@ public class HomeUI extends JFrame {
         }
     }
 
-    public void showNotification(ResponseModel responseModel) {
+//    public void showNotification(ResponseModel responseModel) {
+//        if (responseModel.isSuccess()) {
+//            JOptionPane.showMessageDialog(null, responseModel.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+////            updateHomeScreen();
+//        } else {
+//            JOptionPane.showMessageDialog(null, responseModel.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+
+    public void updateHomeScreen() {
+        homeController.initHomeScreen();
+    }
+
+    @Override
+    public void notify(ResponseModel responseModel) {
         if (responseModel.isSuccess()) {
             JOptionPane.showMessageDialog(null, responseModel.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             updateHomeScreen();
         } else {
             JOptionPane.showMessageDialog(null, responseModel.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    public void updateHomeScreen() {
-        homeController.getListInvoices();
-        homeController.getTotalInvoices();
-        homeController.getTotalInvoicesOfCustomerType();
     }
 }

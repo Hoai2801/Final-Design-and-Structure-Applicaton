@@ -29,6 +29,7 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
             throw new RuntimeException(validResult.getError()); 
         }
         if (requestModel.getNationality().equals("Vietnam")) {
+            System.out.println(requestModel.getInvoiceId());
             VietnameseInvoice existingInvoice = vietnameseInvoiceRepository.getInvoiceById(requestModel.getInvoiceId());
             if (existingInvoice != null) {
                 existingInvoice.setCustomerId(requestModel.getCustomerId());

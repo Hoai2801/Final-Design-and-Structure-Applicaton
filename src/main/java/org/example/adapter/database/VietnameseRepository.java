@@ -61,7 +61,7 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
 
     @Override
     public boolean updateInvoice(VietnameseInvoice invoice) {
-        String sql = "UPDATE VietnameseInvoice SET fullName = ?, invoiceDate = ?, quantity = ?, price = ?, customerType = ?, quota = ? WHERE customerId = ?";
+        String sql = "UPDATE VietnameseInvoice SET fullName = ?, invoiceDate = ?, quantity = ?, price = ?, customerType = ?, quota = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, invoice.getFullName());
             statement.setDate(2, java.sql.Date.valueOf(invoice.getInvoiceDate()));
@@ -69,7 +69,7 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
             statement.setDouble(4, invoice.getPrice());
             statement.setString(5, invoice.getCustomerType());
             statement.setDouble(6, invoice.getQuota());
-            statement.setString(7, String.valueOf(invoice.getCustomerId()));
+            statement.setString(7, String.valueOf(invoice.getInvoiceId()));
             statement.executeUpdate();
             System.out.println(statement.toString());
             return true; 

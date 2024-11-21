@@ -59,7 +59,13 @@ public class Main {
         
         // home screen
         HomeUI homeUI = new HomeUI();
+        
+        
         HomePresenter homePresenter = new HomePresenter(homeUI);
+        
+        homePresenter.addScreen(homeUI);
+        createScreenPresenter.addScreen(homeUI);
+        updateScreenPresenter.addScreen(homeUI);
         
         UpdateHomeScreenUseCase updateHomeScreenUseCase = new UpdateHomeScreenUseCase(homePresenter);
         createController.setUpdateHomeScreenUseCase(updateHomeScreenUseCase);
@@ -74,11 +80,12 @@ public class Main {
         OpenUpdateScreenUseCase openUpdateScreenUseCase = new OpenUpdateScreenUseCase(updateScreenPresenter); 
         SearchInvoiceByNameUseCase searchInvoiceByNameUseCase = new SearchInvoiceByNameUseCase(homePresenter, vietnameseRepository, foreignRepository);
         OpenChartScreenUseCase openChartScreenUseCase = new OpenChartScreenUseCase(chartScreen);
-        
+        InitHomeUseCase initHomeUseCase = new InitHomeUseCase(homePresenter, getListInvoicesUseCase, getTotalInvoicesOfCustomerTypeUseCase, getTotalInvoicesUseCase);
         HomeController homeController = new HomeController(
-                getTotalInvoicesUseCase,
-                getTotalInvoicesOfCustomerTypeUseCase,
-                getListInvoicesUseCase,
+//                getTotalInvoicesUseCase,
+//                getTotalInvoicesOfCustomerTypeUseCase,
+//                getListInvoicesUseCase,
+                initHomeUseCase,
                 deleteInvoiceByIdUseCase,
                 openUpdateScreenUseCase,
                 openCreateScreenUseCase,

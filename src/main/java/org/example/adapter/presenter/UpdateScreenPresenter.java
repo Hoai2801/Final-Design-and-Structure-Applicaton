@@ -7,7 +7,7 @@ import org.example.domain.entities.models.ResponseModel;
 
 import java.util.List;
 
-public class UpdateScreenPresenter implements 
+public class UpdateScreenPresenter extends Presenter implements 
         GetInvoiceByIdOutputBoundary, 
         UpdateInvoiceOutputBoundary,
         OpenUpdateScreenOutputBoundary,
@@ -29,8 +29,8 @@ public class UpdateScreenPresenter implements
 
     @Override
     public void update(ResponseModel res) {
-        view.showNotification(res);
-        view.dispose();
+        System.out.println("update");
+        notify(res);
     }
 
     @Override

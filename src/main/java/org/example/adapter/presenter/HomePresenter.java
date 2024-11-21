@@ -7,15 +7,21 @@ import org.example.domain.entities.models.ResponseModel;
 
 import java.util.List;
 
-public class HomePresenter implements 
+public class HomePresenter extends Presenter implements 
         GetTotalInvoiceOutputBoundary, 
         GetTotalInvoicesOfCustomerTypeOutputBoundary, 
         GetListInvoicesOutputBoundary, 
         DeleteInvoiceByIdOutputBoundary,
         UpdateHomeScreenOutputBoundary,
-        SearchInvoiceByNameOutputBoundary
+        SearchInvoiceByNameOutputBoundary,
+        InitHomeOutputBoundary
 {
     private final HomeUI homeUI;
+    
+    private int totalInvoices = 0;
+    private int totalInvoicesOfVietnamCustomer = 0;
+    private int totalInvoicesOfForeignCustomer = 0;
+    private List<InvoiceDTO> invoices = null;
     
     public HomePresenter(
             HomeUI homeUI
@@ -25,32 +31,22 @@ public class HomePresenter implements
 
     @Override
     public void showTotalInvoices(int i) {
-        homeUI.showTotalInvoices(i);
+        totalInvoices = i;
     }
 
     @Override
     public void showTotalInvoicesOfVietnamCustomer(int i) {
-        homeUI.showTotalInvoicesVietnamCustomer(i);
+        totalInvoicesOfVietnamCustomer = i;
     }
 
     @Override
     public void showTotalInvoicesOfForeignCustomer(int i) {
-        homeUI.showTotalInvoicesForeignCustomer(i);
+        totalInvoicesOfForeignCustomer = i;
     }
 
     @Override
     public void getListInvoices(List<InvoiceDTO> invoices) {
-        homeUI.showListInvoices(invoices);
-    }
-
-    @Override
-    public void onDeleteSuccess(ResponseModel responseModel) {
-        homeUI.showNotification(responseModel);
-    }
-
-    @Override
-    public void onDeleteFail(ResponseModel responseModel) {
-        homeUI.showNotification(responseModel);
+        this.invoices = invoices;
     }
 
     @Override
@@ -61,5 +57,20 @@ public class HomePresenter implements
     @Override
     public void showSearchInvoiceByName(List<InvoiceDTO> invoices) {
         homeUI.showListInvoices(invoices);
+    }
+
+    @Override
+    public void initHome() {
+        homeUI.showTotalInvoices(totalInvoices);
+        homeUI.showTotalInvoicesVietnamCustomer(totalInvoicesOfVietnamCustomer);
+        homeUI.showTotalInvoicesForeignCustomer(totalInvoicesOfForeignCustomer);
+        homeUI.showListInvoices(invoices);
+    }
+
+    @Override
+    public void deleteInvoice(ResponseModel responseModel) {
+        System.out.println("deleteInvoice");
+        System.out.println(responseModel.getMessage());
+        notify(responseModel);
     }
 }

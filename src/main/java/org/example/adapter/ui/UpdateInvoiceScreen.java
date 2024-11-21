@@ -10,7 +10,7 @@ import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class UpdateInvoiceScreen extends JFrame {
+public class UpdateInvoiceScreen extends JFrame implements Screen {
     private UpdateController controller;
     private JTextField customerIdField;
     private JTextField nameField;
@@ -215,5 +215,11 @@ public class UpdateInvoiceScreen extends JFrame {
 
     public void setController(UpdateController updateController) {
         this.controller = updateController;
+    }
+
+    @Override
+    public void notify(ResponseModel message) {
+        showNotification(message);
+        this.dispose();
     }
 }
