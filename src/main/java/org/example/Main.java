@@ -74,14 +74,16 @@ public class Main {
         
         // home 
         GetTotalInvoicesUseCase getTotalInvoicesUseCase = new GetTotalInvoicesUseCase(homePresenter, vietnameseRepository, foreignRepository);
-        GetTotalInvoicesOfCustomerTypeUseCase getTotalInvoicesOfCustomerTypeUseCase
-                = new GetTotalInvoicesOfCustomerTypeUseCase(homePresenter, vietnameseRepository, foreignRepository);
+//        GetTotalInvoicesOfCustomerTypeUseCase getTotalInvoicesOfCustomerTypeUseCase
+//                = new GetTotalInvoicesOfCustomerTypeUseCase(homePresenter, vietnameseRepository, foreignRepository);
+        GetTotalInvoiceOfForeignUseCase getTotalInvoiceOfForeignUseCase = new GetTotalInvoiceOfForeignUseCase(homePresenter, foreignRepository);
+        GetTotalInvoiceOfVietnameseUseCase getTotalInvoiceOfVietnameseUseCase = new GetTotalInvoiceOfVietnameseUseCase(homePresenter, vietnameseRepository);
         GetListInvoicesUseCase getListInvoicesUseCase = new GetListInvoicesUseCase(homePresenter, vietnameseRepository, foreignRepository); 
         DeleteInvoiceByIdUseCase deleteInvoiceByIdUseCase = new DeleteInvoiceByIdUseCase(homePresenter, vietnameseRepository, foreignRepository);
         OpenUpdateScreenUseCase openUpdateScreenUseCase = new OpenUpdateScreenUseCase(updateScreenPresenter); 
         SearchInvoiceByNameUseCase searchInvoiceByNameUseCase = new SearchInvoiceByNameUseCase(homePresenter, vietnameseRepository, foreignRepository);
         OpenChartScreenUseCase openChartScreenUseCase = new OpenChartScreenUseCase(chartScreen);
-        InitHomeUseCase initHomeUseCase = new InitHomeUseCase(homePresenter, getListInvoicesUseCase, getTotalInvoicesOfCustomerTypeUseCase, getTotalInvoicesUseCase);
+        InitHomeUseCase initHomeUseCase = new InitHomeUseCase(homePresenter, getListInvoicesUseCase, getTotalInvoiceOfVietnameseUseCase, getTotalInvoiceOfForeignUseCase, getTotalInvoicesUseCase);
         HomeController homeController = new HomeController(
 //                getTotalInvoicesUseCase,
 //                getTotalInvoicesOfCustomerTypeUseCase,

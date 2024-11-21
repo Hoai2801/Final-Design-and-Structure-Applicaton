@@ -1,5 +1,5 @@
 package org.example.domain.boundaries.in;
 
-public interface GetTotalInvoicesOfCustomerTypeInputBoundary {
+public interface GetTotalInvoiceOfForeignInputBoundary {
     void execute();
 }

@@ -1,9 +1,6 @@
 package org.example.adapter.ui;
 
 import org.example.adapter.controller.HomeController;
-import org.example.adapter.presenter.CreateScreenPresenter;
-import org.example.adapter.presenter.HomePresenter;
-import org.example.adapter.presenter.UpdateScreenPresenter;
 import org.example.domain.entities.dtos.InvoiceDTO;
 import org.example.domain.entities.models.ResponseModel;
 
@@ -231,15 +228,6 @@ public class HomeUI extends JFrame implements Screen {
             });
         }
     }
-
-//    public void showNotification(ResponseModel responseModel) {
-//        if (responseModel.isSuccess()) {
-//            JOptionPane.showMessageDialog(null, responseModel.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
-////            updateHomeScreen();
-//        } else {
-//            JOptionPane.showMessageDialog(null, responseModel.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
 
     public void updateHomeScreen() {
         homeController.initHomeScreen();

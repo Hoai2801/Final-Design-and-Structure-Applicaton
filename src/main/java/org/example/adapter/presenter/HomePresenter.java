@@ -9,7 +9,8 @@ import java.util.List;
 
 public class HomePresenter extends Presenter implements 
         GetTotalInvoiceOutputBoundary, 
-        GetTotalInvoicesOfCustomerTypeOutputBoundary, 
+        GetTotalInvoiceOfVietnameseOutputBoundary,
+        GetTotalInvoiceOfForeignOutputBoundary,
         GetListInvoicesOutputBoundary, 
         DeleteInvoiceByIdOutputBoundary,
         UpdateHomeScreenOutputBoundary,
@@ -32,16 +33,6 @@ public class HomePresenter extends Presenter implements
     @Override
     public void showTotalInvoices(int i) {
         totalInvoices = i;
-    }
-
-    @Override
-    public void showTotalInvoicesOfVietnamCustomer(int i) {
-        totalInvoicesOfVietnamCustomer = i;
-    }
-
-    @Override
-    public void showTotalInvoicesOfForeignCustomer(int i) {
-        totalInvoicesOfForeignCustomer = i;
     }
 
     @Override
@@ -70,5 +61,15 @@ public class HomePresenter extends Presenter implements
     @Override
     public void deleteInvoice(ResponseModel responseModel) {
         notify(responseModel);
+    }
+
+    @Override
+    public void getTotalInvoiceOfForeign(int i) {
+        totalInvoicesOfForeignCustomer = i;
+    }
+
+    @Override
+    public void getTotalInvoiceOfVietnamese(int i) {
+        totalInvoicesOfVietnamCustomer = i;
     }
 }
