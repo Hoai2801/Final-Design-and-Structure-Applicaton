@@ -26,10 +26,10 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     public void updateInvoice(RequestModel requestModel) {
         ValidResult validResult = Valid.valid(requestModel);
         if (!validResult.isValid()) {
-            throw new RuntimeException(validResult.getError()); 
+            outputBoundary.update(new ResponseModel(false, validResult.getError()));
+            return;
         }
         if (requestModel.getNationality().equals("Vietnam")) {
-            System.out.println(requestModel.getInvoiceId());
             VietnameseInvoice existingInvoice = vietnameseInvoiceRepository.getInvoiceById(requestModel.getInvoiceId());
             if (existingInvoice != null) {
                 existingInvoice.setCustomerId(requestModel.getCustomerId());
@@ -43,10 +43,10 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
                 if (result) {
                     outputBoundary.update(new ResponseModel(true, "Invoice updated successfully"));
                 } else {
-                    throw new RuntimeException("Invoice update failed"); 
+                    outputBoundary.update(new ResponseModel(false, "Invoice update failed"));
                 }
             } else {
-                throw new RuntimeException("Invoice not found"); 
+                outputBoundary.update(new ResponseModel(false, "Invoice not found"));
             }
         } else {
             ForeignInvoice existingInvoice = foreignInvoiceRepository.getInvoiceById(requestModel.getInvoiceId());
@@ -61,10 +61,10 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
                 if (result) {
                     outputBoundary.update(new ResponseModel(true, "Invoice updated successfully"));
                 } else {
-                    throw new RuntimeException("Invoice update failed");
+                    outputBoundary.update(new ResponseModel(false, "Invoice update failed"));
                 }
             } else {
-                throw new RuntimeException("Invoice not found");
+                outputBoundary.update(new ResponseModel(false, "Invoice not found"));
             }
         }
     }

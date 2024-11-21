@@ -32,7 +32,8 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
     public void createInvoice(RequestModel req) {
         ValidResult validResult = Valid.valid(req);
         if (!validResult.isValid()) {
-            throw new RuntimeException(validResult.getError());
+            outputBoundary.onCreate(new ResponseModel(false, validResult.getError()));
+            return;
         }
         Invoice invoice = InvoiceFactory.createInvoice(req.getCustomerId(), req.getFullName(), req.getInvoiceDate(), req.getCustomerType(), req.getQuantity(), req.getPrice(), req.getQuota(), req.getNationality());
         boolean result;
@@ -42,9 +43,9 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
             result = foreignInvoiceRepository.createInvoice((ForeignInvoice) invoice);
         }
         if (result) {
-            outputBoundary.onSuccess(new ResponseModel(true, "Invoice created successfully"));
+            outputBoundary.onCreate(new ResponseModel(true, "Invoice created successfully"));
         } else {
-            throw new RuntimeException("Invoice creation failed"); 
+            outputBoundary.onCreate(new ResponseModel(false, "Invoice creation failed")); 
         }
     }
 }

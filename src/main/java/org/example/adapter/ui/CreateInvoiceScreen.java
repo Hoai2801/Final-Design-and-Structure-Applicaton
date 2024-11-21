@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.List;
 
-public class CreateInvoiceScreen extends JFrame {
+public class CreateInvoiceScreen extends JFrame implements Screen {
     private CreateController createController;
     private JTextField customerIdField;
     private JTextField nameField;
@@ -237,5 +237,10 @@ public class CreateInvoiceScreen extends JFrame {
 
     public void setController(CreateController createController) {
         this.createController = createController;
+    }
+
+    @Override
+    public void notify(ResponseModel message) {
+        showNotification(message);
     }
 }

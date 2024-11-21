@@ -167,6 +167,7 @@ public class UpdateInvoiceScreen extends JFrame implements Screen {
     public void showNotification(ResponseModel message) {
         if (message.isSuccess()) {
             JOptionPane.showMessageDialog(null, message.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(null, message.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -220,6 +221,5 @@ public class UpdateInvoiceScreen extends JFrame implements Screen {
     @Override
     public void notify(ResponseModel message) {
         showNotification(message);
-        this.dispose();
     }
 }

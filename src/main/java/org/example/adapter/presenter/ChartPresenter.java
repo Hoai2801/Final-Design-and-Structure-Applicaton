@@ -1,7 +1,6 @@
 package org.example.adapter.presenter;
 
 import org.example.adapter.ui.ChartScreen;
-import org.example.domain.boundaries.in.GetAnalystInputBoundary;
 import org.example.domain.boundaries.out.GetAnalystOutputBoundary;
 import org.example.domain.entities.models.AnalystResponse;
 

@@ -60,12 +60,13 @@ public class Main {
         // home screen
         HomeUI homeUI = new HomeUI();
         
-        
         HomePresenter homePresenter = new HomePresenter(homeUI);
         
         homePresenter.addScreen(homeUI);
         createScreenPresenter.addScreen(homeUI);
+        createScreenPresenter.addScreen(createInvoiceScreen);
         updateScreenPresenter.addScreen(homeUI);
+        updateScreenPresenter.addScreen(updateInvoiceScreen);
         
         UpdateHomeScreenUseCase updateHomeScreenUseCase = new UpdateHomeScreenUseCase(homePresenter);
         createController.setUpdateHomeScreenUseCase(updateHomeScreenUseCase);

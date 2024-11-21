@@ -31,7 +31,7 @@ public class DeleteInvoiceByIdUseCase implements DeleteInvoiceByIdInputBoundary 
         if (isSuccess) {
             outputBoundary.deleteInvoice(new ResponseModel(true, "Invoice deleted successfully"));
         } else {
-            throw new RuntimeException("Invoice deletion failed");
+            outputBoundary.deleteInvoice(new ResponseModel(false, "Invoice delete failed"));
         }
     }
 }

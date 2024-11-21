@@ -41,13 +41,7 @@ public class UpdateController {
     }
 
     public void updateInvoice(RequestModel requestModel) {
-        try {
-            updateInvoiceUseCase.updateInvoice(requestModel);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Fail", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        updateHomeScreenInputBoundary.execute();
+        updateInvoiceUseCase.updateInvoice(requestModel);
     }
 
     public void updateHomeScreen() {

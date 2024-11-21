@@ -31,16 +31,10 @@ public class CreateScreenPresenter extends Presenter implements OpenCreateScreen
     }
 
     @Override
-    public void onSuccess(ResponseModel message) {
+    public void onCreate(ResponseModel message) {
         isSuccess = true;
         showNotification(message);
         view.clearForm();
-    }
-
-    @Override
-    public void onError(ResponseModel error) {
-        isSuccess = false;
-        showNotification(error);
     }
     
     public void showNotification(ResponseModel message) {

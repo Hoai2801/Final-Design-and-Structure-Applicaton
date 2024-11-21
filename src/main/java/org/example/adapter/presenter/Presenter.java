@@ -14,7 +14,6 @@ public class Presenter {
     }
     
     public void notify(ResponseModel message) {
-        System.out.println(screens.size());
         for (Screen screen : screens) {
             screen.notify(message);
         }

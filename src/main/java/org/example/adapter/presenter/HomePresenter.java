@@ -69,8 +69,6 @@ public class HomePresenter extends Presenter implements
 
     @Override
     public void deleteInvoice(ResponseModel responseModel) {
-        System.out.println("deleteInvoice");
-        System.out.println(responseModel.getMessage());
         notify(responseModel);
     }
 }

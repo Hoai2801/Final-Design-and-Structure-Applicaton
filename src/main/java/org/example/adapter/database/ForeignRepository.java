@@ -53,14 +53,15 @@ public class ForeignRepository implements ForeignInvoiceRepository {
 
     @Override
     public boolean updateInvoice(ForeignInvoice invoice) {
-        String sql = "UPDATE ForeignInvoice SET fullName = ?, invoiceDate = ?, quantity = ?, price = ?, nationality = ? WHERE customerId = ?";
+        String sql = "UPDATE ForeignInvoice SET customerId = ?, fullName = ?, invoiceDate = ?, quantity = ?, price = ?, nationality = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, invoice.getFullName());
-            statement.setDate(2, java.sql.Date.valueOf(invoice.getInvoiceDate()));
-            statement.setDouble(3, invoice.getQuantity());
-            statement.setDouble(4, invoice.getPrice());
-            statement.setString(5, invoice.getNationality());
-            statement.setString(6, String.valueOf(invoice.getCustomerId()));
+            statement.setString(1, String.valueOf(invoice.getCustomerId()));
+            statement.setString(2, invoice.getFullName());
+            statement.setDate(3, java.sql.Date.valueOf(invoice.getInvoiceDate()));
+            statement.setDouble(4, invoice.getQuantity());
+            statement.setDouble(5, invoice.getPrice());
+            statement.setString(6, invoice.getNationality());
+            statement.setString(7, String.valueOf(invoice.getInvoiceId()));
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {

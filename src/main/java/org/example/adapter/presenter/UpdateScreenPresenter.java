@@ -29,7 +29,6 @@ public class UpdateScreenPresenter extends Presenter implements
 
     @Override
     public void update(ResponseModel res) {
-        System.out.println("update");
         notify(res);
     }
 

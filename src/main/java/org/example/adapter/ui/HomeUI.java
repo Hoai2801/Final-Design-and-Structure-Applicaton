@@ -248,10 +248,7 @@ public class HomeUI extends JFrame implements Screen {
     @Override
     public void notify(ResponseModel responseModel) {
         if (responseModel.isSuccess()) {
-            JOptionPane.showMessageDialog(null, responseModel.getMessage(), "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             updateHomeScreen();
-        } else {
-            JOptionPane.showMessageDialog(null, responseModel.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

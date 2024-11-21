@@ -61,15 +61,16 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
 
     @Override
     public boolean updateInvoice(VietnameseInvoice invoice) {
-        String sql = "UPDATE VietnameseInvoice SET fullName = ?, invoiceDate = ?, quantity = ?, price = ?, customerType = ?, quota = ? WHERE id = ?";
+        String sql = "UPDATE VietnameseInvoice SET customerId = ?, fullName = ?, invoiceDate = ?, quantity = ?, price = ?, customerType = ?, quota = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, invoice.getFullName());
-            statement.setDate(2, java.sql.Date.valueOf(invoice.getInvoiceDate()));
-            statement.setDouble(3, invoice.getQuantity());
-            statement.setDouble(4, invoice.getPrice());
-            statement.setString(5, invoice.getCustomerType());
-            statement.setDouble(6, invoice.getQuota());
-            statement.setString(7, String.valueOf(invoice.getInvoiceId()));
+            statement.setString(1, String.valueOf(invoice.getCustomerId()));
+            statement.setString(2, invoice.getFullName());
+            statement.setDate(3, java.sql.Date.valueOf(invoice.getInvoiceDate()));
+            statement.setDouble(4, invoice.getQuantity());
+            statement.setDouble(5, invoice.getPrice());
+            statement.setString(6, invoice.getCustomerType());
+            statement.setDouble(7, invoice.getQuota());
+            statement.setInt(8, invoice.getInvoiceId());
             statement.executeUpdate();
             System.out.println(statement.toString());
             return true; 
