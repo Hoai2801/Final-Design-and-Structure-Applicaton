@@ -23,6 +23,9 @@ public class GetInvoiceByIdUseCase implements GetInvoiceByIdInputBoundary {
     public void getInvoiceById(int invoiceId, String type) {
         if (type.equals("Vietnam")) {
             VietnameseInvoice invoice = vietnameseRepository.getInvoiceById(invoiceId);
+            if (invoice == null) {
+                return;
+            }
             InvoiceDTO vietnameseInvoice = new InvoiceDTO(
                     invoice.getInvoiceId(),
                     invoice.getCustomerId(),
@@ -36,8 +39,11 @@ public class GetInvoiceByIdUseCase implements GetInvoiceByIdInputBoundary {
                     invoice.calculateTotal()
             );
             outputBoundary.getInvoiceById(vietnameseInvoice);
-        } else {
+        } else if (type.equals("Foreign")) {
             ForeignInvoice invoice = foreignRepository.getInvoiceById(invoiceId);
+            if (invoice == null) {
+                return;
+            }
             InvoiceDTO foreignInvoice = new InvoiceDTO(
                     invoice.getInvoiceId(),
                     invoice.getCustomerId(),
