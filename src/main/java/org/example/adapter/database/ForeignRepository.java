@@ -33,7 +33,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
             statement.setDouble(5, invoice.getPrice());
             statement.setString(6, invoice.getNationality());
             statement.executeUpdate();
-            return true;
+            return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
             return false;
         }
@@ -45,7 +45,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, String.valueOf(invoice.getCustomerId()));
             statement.executeUpdate();
-            return true;
+            return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
             return false;
         }
@@ -63,7 +63,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
             statement.setString(6, invoice.getNationality());
             statement.setString(7, String.valueOf(invoice.getInvoiceId()));
             statement.executeUpdate();
-            return true;
+            return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
             return false;
         }
@@ -166,7 +166,7 @@ public class ForeignRepository implements ForeignInvoiceRepository {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, invoiceId);
             statement.executeUpdate();
-            return true;
+            return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

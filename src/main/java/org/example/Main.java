@@ -20,6 +20,7 @@ import org.example.domain.boundaries.in.GetCustomerTypeInputBoundary;
 import org.example.domain.boundaries.in.GetNationalityInputBoundary;
 import org.example.domain.boundaries.out.NationalityRepository;
 import org.example.domain.usecases.*;
+import org.example.domain.util.Valid;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,6 +29,7 @@ public class Main {
         ForeignRepository foreignRepository = new ForeignRepository();
         CustomerTypeRepositoryImpl customerTypeRepository = new CustomerTypeRepositoryImpl();
         NationalityRepository nationalityRepository = new NationalityRepositoryImpl();
+        Valid valid = new Valid(nationalityRepository, customerTypeRepository);
         
         // create invoice screen
         CreateInvoiceScreen createInvoiceScreen = new CreateInvoiceScreen();
@@ -35,7 +37,7 @@ public class Main {
         OpenCreateScreenUseCase openCreateScreenUseCase = new OpenCreateScreenUseCase(createScreenPresenter);
         GetCustomerTypeInputBoundary getCustomerTypeUseCase = new GetCustomerTypeUseCase(createScreenPresenter, customerTypeRepository);
         GetNationalityInputBoundary getNationalityUseCase = new GetNationalityUseCase(createScreenPresenter, nationalityRepository);
-        CreateInvoiceUseCase createInvoiceUseCase = new CreateInvoiceUseCase(createScreenPresenter, vietnameseRepository, foreignRepository);
+        CreateInvoiceUseCase createInvoiceUseCase = new CreateInvoiceUseCase(createScreenPresenter, vietnameseRepository, foreignRepository, valid);
         CreateController createController = new CreateController(createInvoiceUseCase, getCustomerTypeUseCase, getNationalityUseCase);
         createInvoiceScreen.setController(createController); 
 
@@ -46,7 +48,7 @@ public class Main {
         GetInvoiceByIdUseCase getInvoiceByIdUseCase = new GetInvoiceByIdUseCase(updateScreenPresenter, vietnameseRepository, foreignRepository);
         getCustomerTypeUseCase = new GetCustomerTypeUseCase(updateScreenPresenter, customerTypeRepository);
         getNationalityUseCase = new GetNationalityUseCase(updateScreenPresenter, nationalityRepository);
-        UpdateInvoiceUseCase updateInvoiceUseCase = new UpdateInvoiceUseCase(updateScreenPresenter, vietnameseRepository, foreignRepository);
+        UpdateInvoiceUseCase updateInvoiceUseCase = new UpdateInvoiceUseCase(updateScreenPresenter, vietnameseRepository, foreignRepository, valid);
         var updateController = new UpdateController(getInvoiceByIdUseCase, updateInvoiceUseCase, getCustomerTypeUseCase, getNationalityUseCase);    
         updateInvoiceScreen.setController(updateController);
         

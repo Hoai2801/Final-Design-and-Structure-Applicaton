@@ -137,7 +137,6 @@ public class UpdateInvoiceScreen extends JFrame implements Screen {
 
     public void open(int invoiceId, String type) {
         setVisible(true);
-        controller.loadDateForView(invoiceId, type);
     }
 
     private void updateInvoice() {

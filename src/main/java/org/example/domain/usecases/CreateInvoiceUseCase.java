@@ -17,20 +17,22 @@ public class CreateInvoiceUseCase implements CreateInvoiceInputBoundary {
     private final CreateInvoiceOutputBoundary outputBoundary;
     private final VietnameseInvoiceRepository vietnameseInvoiceRepository;
     private final ForeignInvoiceRepository foreignInvoiceRepository;
-
+    private final Valid valid;
     public CreateInvoiceUseCase(
             CreateInvoiceOutputBoundary outputBoundary,
             VietnameseInvoiceRepository vietnameseInvoiceRepository,
-            ForeignInvoiceRepository foreignInvoiceRepository
+            ForeignInvoiceRepository foreignInvoiceRepository,
+            Valid valid
     ) {
         this.outputBoundary = outputBoundary;
         this.vietnameseInvoiceRepository = vietnameseInvoiceRepository;
         this.foreignInvoiceRepository = foreignInvoiceRepository;
+        this.valid = valid;
     }
 
     @Override
     public void createInvoice(RequestModel req) {
-        ValidResult validResult = Valid.valid(req);
+        ValidResult validResult = valid.valid(req);
         if (!validResult.isValid()) {
             outputBoundary.onCreate(new ResponseModel(false, validResult.getError()));
             return;

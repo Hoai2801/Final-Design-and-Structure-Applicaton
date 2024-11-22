@@ -41,7 +41,7 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
             statement.setDouble(7, invoice.getQuota());
             System.out.println(statement);
             statement.executeUpdate();
-            return true; 
+            return statement.getUpdateCount() > 0; 
         } catch (SQLException e) {
             return false;
         }
@@ -169,7 +169,7 @@ public class VietnameseRepository implements VietnameseInvoiceRepository {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, invoiceId);
             statement.executeUpdate();
-            return true;
+            return statement.getUpdateCount() > 0;
         } catch (SQLException e) {
             return false;
         }

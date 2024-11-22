@@ -1,5 +1,7 @@
 package org.example.domain.usecases;
 
+import org.example.adapter.database.CustomerTypeRepositoryImpl;
+import org.example.adapter.database.NationalityRepositoryImpl;
 import org.example.domain.boundaries.in.UpdateInvoiceInputBoundary;
 import org.example.domain.boundaries.out.ForeignInvoiceRepository;
 import org.example.domain.boundaries.out.UpdateInvoiceOutputBoundary;
@@ -15,16 +17,23 @@ public class UpdateInvoiceUseCase implements UpdateInvoiceInputBoundary {
     private final UpdateInvoiceOutputBoundary outputBoundary;
     private final VietnameseInvoiceRepository vietnameseInvoiceRepository;
     private final ForeignInvoiceRepository foreignInvoiceRepository;
+    private final Valid valid;
     
-    public UpdateInvoiceUseCase(UpdateInvoiceOutputBoundary outputBoundary, VietnameseInvoiceRepository vietnameseInvoiceRepository, ForeignInvoiceRepository foreignInvoiceRepository) {
+    public UpdateInvoiceUseCase(
+            UpdateInvoiceOutputBoundary outputBoundary, 
+            VietnameseInvoiceRepository vietnameseInvoiceRepository, 
+            ForeignInvoiceRepository foreignInvoiceRepository,
+            Valid valid
+    ) {
         this.outputBoundary = outputBoundary;
         this.vietnameseInvoiceRepository = vietnameseInvoiceRepository;
         this.foreignInvoiceRepository = foreignInvoiceRepository;
+        this.valid = valid;
     }
     
     @Override
     public void updateInvoice(RequestModel requestModel) {
-        ValidResult validResult = Valid.valid(requestModel);
+        ValidResult validResult = valid.valid(requestModel);
         if (!validResult.isValid()) {
             outputBoundary.update(new ResponseModel(false, validResult.getError()));
             return;

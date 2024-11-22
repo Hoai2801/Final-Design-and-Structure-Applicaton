@@ -30,7 +30,8 @@ public class GetListInvoicesUseCase implements GetListInvoicesInputBoundary {
         List<VietnameseInvoice> vietnameseInvoices = vietnameseRepository.getInvoices();
         List<ForeignInvoice> foreignInvoices = foreignRepository.getInvoices();
         List<InvoiceDTO> allInvoices = new java.util.ArrayList<>();
-        
+        if (vietnameseInvoices != null) {
+            
         for (VietnameseInvoice vietnameseInvoice : vietnameseInvoices) {
             allInvoices.add(new InvoiceDTO(
                     vietnameseInvoice.getInvoiceId(),
@@ -45,20 +46,23 @@ public class GetListInvoicesUseCase implements GetListInvoicesInputBoundary {
                     vietnameseInvoice.calculateTotal()
             ));
         }
+        }
         
-        for (ForeignInvoice foreignInvoice : foreignInvoices) {
-            allInvoices.add(new InvoiceDTO(
-                    foreignInvoice.getInvoiceId(),
-                    foreignInvoice.getCustomerId(),
-                    foreignInvoice.getFullName(),
-                    foreignInvoice.getInvoiceDate(),
-                    "none",
-                    foreignInvoice.getQuantity(),
-                    foreignInvoice.getPrice(),
-                    foreignInvoice.getNationality(),
-                    0,
-                    foreignInvoice.calculateTotal()
-            ));
+        if (foreignInvoices != null) {
+            for (ForeignInvoice foreignInvoice : foreignInvoices) {
+                allInvoices.add(new InvoiceDTO(
+                        foreignInvoice.getInvoiceId(),
+                        foreignInvoice.getCustomerId(),
+                        foreignInvoice.getFullName(),
+                        foreignInvoice.getInvoiceDate(),
+                        "none",
+                        foreignInvoice.getQuantity(),
+                        foreignInvoice.getPrice(),
+                        foreignInvoice.getNationality(),
+                        0,
+                        foreignInvoice.calculateTotal()
+                ));
+            }
         }
         
         outputBoundary.getListInvoices(allInvoices);

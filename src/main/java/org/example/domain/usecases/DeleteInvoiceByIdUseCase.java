@@ -22,10 +22,14 @@ public class DeleteInvoiceByIdUseCase implements DeleteInvoiceByIdInputBoundary 
     }
     @Override
     public void deleteInvoiceById(int invoiceId, String type) {
-        boolean isSuccess;
+        boolean isSuccess = false;
+        if (type == null || type.isEmpty()) {
+            outputBoundary.deleteInvoice(new ResponseModel(false, "Invoice delete failed"));
+            return;
+        }
         if (type.equals("Vietnam")) {
             isSuccess = vietnameseInvoiceRepository.deleteInvoiceById(invoiceId);
-        } else {
+        } else if (type.equals("Foreign")) {
             isSuccess = foreignInvoiceRepository.deleteInvoiceById(invoiceId);
         }
         if (isSuccess) {

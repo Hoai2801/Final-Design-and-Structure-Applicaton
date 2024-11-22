@@ -1,11 +1,7 @@
 package org.example.adapter.controller;
 
 import org.example.domain.boundaries.in.*;
-import org.example.domain.entities.dtos.ValidResult;
 import org.example.domain.entities.models.RequestModel;
-import org.example.domain.util.Valid;
-
-import javax.swing.*;
 
 public class UpdateController {
     private final GetInvoiceByIdInputBoundary getInvoiceByIdUseCase;
@@ -30,7 +26,7 @@ public class UpdateController {
         this.updateHomeScreenInputBoundary = updateHomeScreenInputBoundary;
     }
 
-    public void loadDateForView(int invoiceId, String type) {
+    public void loadDataForView(int invoiceId, String type) {
         getCustomerType();
         getNationality();
         getInvoiceById(invoiceId, type);

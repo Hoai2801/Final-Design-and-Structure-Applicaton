@@ -140,29 +140,28 @@ public class CreateInvoiceScreen extends JFrame implements Screen {
         nationalityLabel.setVisible(false);
 
         // Add ActionListener to the JComboBox to switch fields based on customer type
-        invoiceTypeCombo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedType = (String) invoiceTypeCombo.getSelectedItem();
-                if ("Vietnamese".equals(selectedType)) {
-                    limitField.setVisible(true);
-                    customerTypeCombo.setVisible(true);
-                    nationalityCombo.setVisible(false);
-                    limitLabel.setVisible(true);
-                    customerTypeSpecificLabel.setVisible(true);
-                    nationalityLabel.setVisible(false);
-                } else {
-                    limitField.setVisible(false);
-                    customerTypeCombo.setVisible(false);
-                    nationalityCombo.setVisible(true);
-                    limitLabel.setVisible(false);
-                    customerTypeSpecificLabel.setVisible(false);
-                    nationalityLabel.setVisible(true);
-                }
-                revalidate();
-                repaint();
+        invoiceTypeCombo.addActionListener(e -> {
+            String selectedType = (String) invoiceTypeCombo.getSelectedItem();
+            if ("Vietnamese".equals(selectedType)) {
+                limitField.setVisible(true);
+                customerTypeCombo.setVisible(true);
+                nationalityCombo.setVisible(false);
+                limitLabel.setVisible(true);
+                customerTypeSpecificLabel.setVisible(true);
+                nationalityLabel.setVisible(false);
+            } else {
+                limitField.setVisible(false);
+                customerTypeCombo.setVisible(false);
+                nationalityCombo.setVisible(true);
+                limitLabel.setVisible(false);
+                customerTypeSpecificLabel.setVisible(false);
+                nationalityLabel.setVisible(true);
             }
+            revalidate();
+            repaint();
         });
+        
+        invoiceTypeCombo.setSelectedIndex(0);
         
 
         // Add ActionListener to the save button
